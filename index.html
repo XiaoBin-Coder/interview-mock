@@ -1754,8 +1754,8 @@
         <span>考官发音音色</span>
         <button class="sub-action-link" style="padding:0; font-size:0.75rem; color:var(--accent);" onclick="testVoice()">🔊 试听发音</button>
       </div>
-      <select class="drawer-select" id="voiceSelect" onchange="onVoiceChange()">
-        <option value="">正在检测微软高品质中文语音...</option>
+      <select class="drawer-select" id="voiceSelect" onfocus="populateVoices()" onclick="populateVoices()" onchange="onVoiceChange()">
+        <option value="system_default">📱 手机系统原生语音 (默认推荐)</option>
       </select>
     </div>
 
@@ -6310,25 +6310,39 @@
       return n.includes('yunxi') || n.includes('云希') || u.includes('yunxi');
     }
 
-    // Voice Selection (Specifically Prioritizing Microsoft Yunxi)
+    // Voice Selection (Specifically Prioritizing Microsoft Yunxi on PC & Native Chinese on Mobile)
     function populateVoices() {
       if (!window.speechSynthesis) return;
       availableVoices = window.speechSynthesis.getVoices();
       const voiceSelect = document.getElementById('voiceSelect');
-      if (!voiceSelect || availableVoices.length === 0) return;
+      if (!voiceSelect) return;
+
+      const savedVoiceName = localStorage.getItem('interview_voice_name') || '';
+
+      if (!availableVoices || availableVoices.length === 0) {
+        if (voiceSelect.options.length <= 1) {
+          voiceSelect.innerHTML = '<option value="system_default">📱 手机系统原生语音 (默认推荐)</option>';
+        }
+        return;
+      }
 
       voiceSelect.innerHTML = '';
-      const savedVoiceName = localStorage.getItem('interview_voice_name') || '';
 
       // Prioritize Chinese voices
       const zhVoices = availableVoices.filter(v => 
-        (v.lang && (v.lang.startsWith('zh') || v.lang.startsWith('cmn'))) ||
+        (v.lang && (v.lang.toLowerCase().startsWith('zh') || v.lang.toLowerCase().startsWith('cmn'))) ||
         v.name.includes('Chinese') || v.name.includes('Yunxi') || 
         v.name.includes('Xiaoxiao') || v.name.includes('云希') ||
         v.name.includes('云健') || v.name.includes('晓晓')
       );
       const otherVoices = availableVoices.filter(v => !zhVoices.includes(v));
       const allSorted = [...zhVoices, ...otherVoices];
+
+      // Always prepend system default option
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = 'system_default';
+      defaultOpt.textContent = '📱 手机/系统原生语音 (标准发音)';
+      voiceSelect.appendChild(defaultOpt);
 
       let yunxiIndex = -1;
       let savedIndex = -1;
@@ -6339,7 +6353,7 @@
         let displayName = v.name;
         if (isYunxiVoice(v)) {
           displayName = '🌟 微软云希 (极度拟真沉稳男声 · 考官标配)';
-          if (yunxiIndex === -1) yunxiIndex = idx;
+          if (yunxiIndex === -1) yunxiIndex = idx + 1;
         } else if (v.name.includes('Xiaoxiao') || v.name.includes('晓晓')) {
           displayName = '🌸 微软晓晓 (自然温柔女声)';
         } else if (v.name.includes('Yunjian') || v.name.includes('云健')) {
@@ -6348,21 +6362,22 @@
           displayName = '✨ 微软晓伊 (明朗知性女声)';
         } else if (v.name.includes('Huihui') || v.name.includes('慧慧')) {
           displayName = '🤖 微软慧慧 (Windows系统桌面机械音)';
+        } else if (v.lang && (v.lang.toLowerCase().startsWith('zh') || v.lang.toLowerCase().startsWith('cmn'))) {
+          const cleanName = v.name.replace(/^com\.[^:]+:/, '').replace(/-local$/, '');
+          displayName = `📱 系统中文发音 (${cleanName})`;
         }
         opt.textContent = displayName;
 
         if (savedVoiceName && v.name === savedVoiceName) {
-          savedIndex = idx;
+          savedIndex = idx + 1;
         }
         voiceSelect.appendChild(opt);
       });
 
       // Auto select:
-      // If user had selected a voice that is NOT the robotic Huihui, use saved.
-      // Otherwise, unconditionally default to Microsoft Yunxi!
       let targetIndex = 0;
       if (yunxiIndex !== -1) {
-        if (savedIndex !== -1 && !allSorted[savedIndex].name.includes('Huihui') && !allSorted[savedIndex].name.includes('慧慧')) {
+        if (savedIndex !== -1 && !allSorted[savedIndex - 1]?.name.includes('Huihui') && !allSorted[savedIndex - 1]?.name.includes('慧慧')) {
           targetIndex = savedIndex;
         } else {
           targetIndex = yunxiIndex;
@@ -6377,6 +6392,24 @@
       }
     }
 
+    // Mobile-optimized voice polling
+    let voicePollAttempts = 0;
+    const voicePollTimer = setInterval(() => {
+      voicePollAttempts++;
+      if (window.speechSynthesis) {
+        const v = window.speechSynthesis.getVoices();
+        if (v && v.length > 0) {
+          clearInterval(voicePollTimer);
+          populateVoices();
+          return;
+        }
+      }
+      if (voicePollAttempts >= 12) {
+        clearInterval(voicePollTimer);
+        populateVoices();
+      }
+    }, 250);
+
     if (window.speechSynthesis) {
       if (speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = populateVoices;
@@ -6385,12 +6418,13 @@
     }
 
     function getSelectedVoice() {
+      if (!window.speechSynthesis) return null;
       if (!availableVoices || availableVoices.length === 0) {
-        if (window.speechSynthesis) availableVoices = window.speechSynthesis.getVoices();
+        availableVoices = window.speechSynthesis.getVoices();
       }
       const voiceSelect = document.getElementById('voiceSelect');
       const val = voiceSelect ? voiceSelect.value : '';
-      if (val && availableVoices && availableVoices.length > 0) {
+      if (val && val !== 'system_default' && availableVoices && availableVoices.length > 0) {
         const found = availableVoices.find(v => v.name === val);
         if (found) return found;
       }
@@ -6398,7 +6432,9 @@
       const yunxi = availableVoices ? availableVoices.find(isYunxiVoice) : null;
       if (yunxi) return yunxi;
       // Fallback search for any Chinese voice
-      return availableVoices ? (availableVoices.find(v => v.lang && v.lang.startsWith('zh')) || null) : null;
+      const zh = availableVoices ? availableVoices.find(v => v.lang && (v.lang.toLowerCase().startsWith('zh') || v.lang.toLowerCase().startsWith('cmn'))) : null;
+      if (zh) return zh;
+      return null;
     }
 
     function onVoiceChange() {
@@ -6408,8 +6444,13 @@
     }
 
     function testVoice() {
+      if (!window.speechSynthesis) {
+        alert('当前浏览器不支持语音合成！');
+        return;
+      }
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance("你好！我是今天的电话面试官。请问你准备好开始第一题了吗？");
+      populateVoices();
+      const utter = new SpeechSynthesisUtterance("你好！我是电话面试官。准备好开始第一题了吗？");
       utter.lang = 'zh-CN';
       utter.rate = parseFloat(document.getElementById('voiceRateSelect').value) || 1.0;
       const v = getSelectedVoice();
@@ -7067,6 +7108,7 @@
 
     // Drawer & Modals
     function toggleSettingsDrawer() {
+      populateVoices();
       const drawer = document.getElementById('settingsDrawer');
       const overlay = document.getElementById('drawerOverlay');
       drawer.classList.toggle('open');
