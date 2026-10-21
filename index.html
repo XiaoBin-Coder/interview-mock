@@ -1136,10 +1136,11 @@
         border-radius: 18px;
       }
       .question-title-box {
-        font-size: 1.05rem;
-        line-height: 1.45;
+        font-size: 1.08rem;
+        line-height: 1.5;
         min-height: auto;
-        padding: 4px 2px;
+        padding: 12px 14px;
+        border-radius: 12px;
       }
       .stage-center {
         min-height: 80px;
@@ -1749,7 +1750,7 @@
     </div>
 
     <!-- 3. Voice Picker -->
-    <div class="drawer-section">
+    <div class="drawer-section" id="voiceSelectSection">
       <div class="drawer-label" style="display:flex; justify-content:space-between; align-items:center;">
         <span>考官发音音色</span>
         <button class="sub-action-link" style="padding:0; font-size:0.75rem; color:var(--accent);" onclick="testVoice()">🔊 试听发音</button>
@@ -1771,7 +1772,7 @@
     </div>
 
     <!-- 5. Voice Rate -->
-    <div class="drawer-section">
+    <div class="drawer-section" id="voiceRateSection">
       <div class="drawer-label">考官语速</div>
       <select class="drawer-select" id="voiceRateSelect" onchange="autoSavePreferences()">
         <option value="0.95">0.95x (沉着从容)</option>
@@ -1796,10 +1797,14 @@
       <div class="drawer-label">实战训练开关</div>
       <div class="drawer-checkbox-group">
         <label class="drawer-checkbox">
+          <input type="checkbox" id="voiceEnableCheck" onchange="onVoiceEnableToggle()" />
+          <span>🎙️ 开启考官语音提问（手机端推荐关闭，直接看题）</span>
+        </label>
+        <label class="drawer-checkbox">
           <input type="checkbox" id="randomCheck" onchange="autoSavePreferences()" />
           <span>🎲 随机抽题（默认按顺序攻克）</span>
         </label>
-        <label class="drawer-checkbox">
+        <label class="drawer-checkbox" id="blindModeLabel">
           <input type="checkbox" id="blindModeCheck" checked onchange="onBlindModeToggle()" />
           <span>🎧 开启盲听模式（隐藏文字练听力）</span>
         </label>
@@ -6614,7 +6619,8 @@
       const reviewZone = document.getElementById('reviewZone');
       const mainBtn = document.getElementById('btnMainAction');
       const subGroup = document.getElementById('subActionGroup');
-      const isBlind = document.getElementById('blindModeCheck').checked;
+      const isVoiceOn = document.getElementById('voiceEnableCheck') ? document.getElementById('voiceEnableCheck').checked : true;
+      const isBlind = isVoiceOn && document.getElementById('blindModeCheck').checked;
 
       if (state === 'asking') {
         podCard.classList.remove('is-review');
@@ -6637,15 +6643,26 @@
         }
       } else if (state === 'answering') {
         podCard.classList.remove('is-review');
-        stageCenter.style.display = 'flex';
         actionDeck.style.display = 'flex';
-        wave.className = 'wave-wrapper speaking';
-        wave.style.display = 'flex';
         const isRec = document.getElementById('autoRecordCheck').checked;
-        stageTip.innerHTML = isRec ?
-          '<span>🎙️ 正在录音收音 · 请开口作答...</span>' :
-          '<span>🗣️ 正在计时作答 · 请开口作答...</span>';
-        stageTip.style.display = 'flex';
+
+        if (isRec) {
+          stageCenter.style.display = 'flex';
+          wave.className = 'wave-wrapper speaking';
+          wave.style.display = 'flex';
+          stageTip.innerHTML = '<span>🎙️ 正在录音收音 · 请开口作答...</span>';
+          stageTip.style.display = 'flex';
+        } else if (isVoiceOn) {
+          stageCenter.style.display = 'flex';
+          wave.className = 'wave-wrapper speaking';
+          wave.style.display = 'flex';
+          stageTip.innerHTML = '<span>🗣️ 正在计时作答 · 请开口作答...</span>';
+          stageTip.style.display = 'flex';
+        } else {
+          // 纯看题极速模式：彻底隐藏波形与提示，把卡片空间全留给考题
+          stageCenter.style.display = 'none';
+        }
+
         reviewZone.style.display = 'none';
         subGroup.style.display = 'flex';
         mainBtn.innerHTML = '<span>⏹️ 我回答完了 · 查看得分复盘<span class="kbd-hint"> (Space / Enter)</span></span>';
@@ -6774,9 +6791,15 @@
       clearInterval(timer);
       applyTimerSetting();
 
-      // State: Asking
-      setPodState('asking');
-      speakCurrentQuestion();
+      // State: Asking (Voice Mode) vs Answering (Pure Question Look Mode)
+      const isVoiceOn = document.getElementById('voiceEnableCheck') ? document.getElementById('voiceEnableCheck').checked : true;
+      if (isVoiceOn) {
+        setPodState('asking');
+        speakCurrentQuestion();
+      } else {
+        window.speechSynthesis.cancel();
+        startAnswering();
+      }
     }
 
     function togglePeek() {
@@ -6800,6 +6823,12 @@
 
     // Speech & Audio
     function speakCurrentQuestion() {
+      const isVoiceOn = document.getElementById('voiceEnableCheck') ? document.getElementById('voiceEnableCheck').checked : true;
+      if (!isVoiceOn) {
+        window.speechSynthesis.cancel();
+        startAnswering();
+        return;
+      }
       const q = filteredQuestions[currentIndex];
       if (!q) return;
       window.speechSynthesis.cancel();
@@ -7159,6 +7188,37 @@
     }
 
     // Preference Persistence
+    function updateVoiceSectionUI() {
+      const isVoiceOn = document.getElementById('voiceEnableCheck').checked;
+      const voiceSection = document.getElementById('voiceSelectSection');
+      const voiceRateSection = document.getElementById('voiceRateSection');
+      const blindModeLabel = document.getElementById('blindModeLabel');
+      if (voiceSection) {
+        voiceSection.style.opacity = isVoiceOn ? '1' : '0.35';
+        voiceSection.style.pointerEvents = isVoiceOn ? 'auto' : 'none';
+      }
+      if (voiceRateSection) {
+        voiceRateSection.style.opacity = isVoiceOn ? '1' : '0.35';
+        voiceRateSection.style.pointerEvents = isVoiceOn ? 'auto' : 'none';
+      }
+      if (blindModeLabel) {
+        blindModeLabel.style.opacity = isVoiceOn ? '1' : '0.35';
+        blindModeLabel.style.pointerEvents = isVoiceOn ? 'auto' : 'none';
+      }
+    }
+
+    function onVoiceEnableToggle() {
+      autoSavePreferences();
+      updateVoiceSectionUI();
+      const isVoiceOn = document.getElementById('voiceEnableCheck').checked;
+      if (!isVoiceOn) {
+        window.speechSynthesis.cancel();
+        startAnswering();
+      } else {
+        speakCurrentQuestion();
+      }
+    }
+
     function autoSavePreferences() {
       const bank = document.getElementById('bankSelect').value;
       const cat = document.getElementById('categorySelect').value;
@@ -7166,6 +7226,7 @@
       const rate = document.getElementById('voiceRateSelect').value;
       const voice = document.getElementById('voiceSelect').value;
       const theme = document.getElementById('themeSelect').value;
+      const voiceEnable = document.getElementById('voiceEnableCheck').checked;
       const blind = document.getElementById('blindModeCheck').checked;
       const random = document.getElementById('randomCheck').checked;
       const autoRecord = document.getElementById('autoRecordCheck').checked;
@@ -7176,6 +7237,7 @@
       localStorage.setItem('interview_voice_rate', rate);
       if (voice) localStorage.setItem('interview_voice_name', voice);
       localStorage.setItem('interview_theme', theme);
+      localStorage.setItem('interview_voice_enable', String(voiceEnable));
       localStorage.setItem('interview_blind', blind);
       localStorage.setItem('interview_random', String(random));
       localStorage.setItem('interview_auto_record', String(autoRecord));
@@ -7184,11 +7246,12 @@
     function saveCurrentAsDefault() {
       autoSavePreferences();
       localStorage.setItem('interview_default_locked', 'true');
-      const vName = document.getElementById('voiceSelect').selectedOptions[0]?.textContent || '微软云希';
+      const vName = document.getElementById('voiceSelect').selectedOptions[0]?.textContent || '手机系统原生语音';
       const isRandom = document.getElementById('randomCheck').checked;
       const tSec = document.getElementById('timerSelect').value;
       const vRate = document.getElementById('voiceRateSelect').value;
       const tTheme = document.getElementById('themeSelect').selectedOptions[0]?.textContent || '护眼主题';
+      const vEnable = document.getElementById('voiceEnableCheck').checked;
       const bMode = document.getElementById('blindModeCheck').checked;
       const aRec = document.getElementById('autoRecordCheck').checked;
       const catName = document.getElementById('categorySelect').selectedOptions[0]?.textContent || '全部分类';
@@ -7196,6 +7259,7 @@
       alert(`✅ 默认配置已永久生效！
 
 以后的每次打开/刷新，都将严格按您的专属设置运行：
+• 考官提问：${vEnable ? '🎙️ 开启语音朗读' : '🔇 关闭语音（纯看题自说极速模式）'}
 • 考官语速：${vRate}x
 • 考官音色：${vName}
 • 作答限时：${tSec > 0 ? tSec + ' 秒' : '无倒计时'}
@@ -7237,7 +7301,16 @@
       }
       applyTimerSetting();
 
-      // 5. Switches (Random, Blind, AutoRecord)
+      // 5. Switches (VoiceEnable, Random, Blind, AutoRecord)
+      const savedVoiceEnable = localStorage.getItem('interview_voice_enable');
+      if (savedVoiceEnable !== null) {
+        document.getElementById('voiceEnableCheck').checked = (savedVoiceEnable === 'true');
+      } else {
+        // 手机端默认关闭语音进入【纯看题直背模式】，电脑端默认开启云希发问！
+        const isMobile = window.innerWidth <= 680;
+        document.getElementById('voiceEnableCheck').checked = !isMobile;
+      }
+      updateVoiceSectionUI();
       const savedRandom = localStorage.getItem('interview_random');
       if (savedRandom !== null) {
         document.getElementById('randomCheck').checked = (savedRandom === 'true');
