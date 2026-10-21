@@ -992,6 +992,14 @@
       color: var(--text-bright);
     }
 
+    /* Global Keyboard Hint (visible on desktop, hidden on mobile) */
+    .kbd-hint {
+      font-size: 0.82em;
+      opacity: 0.75;
+      font-weight: 500;
+      margin-left: 2px;
+    }
+
     @media (max-width: 1120px) {
       .shortcuts-dock {
         display: none;
@@ -1000,113 +1008,233 @@
 
     /* Mobile Responsive Optimizations (< 680px) */
     @media (max-width: 680px) {
+      /* 1. 手机端坚决隐藏键盘快捷键冗余提示 */
+      .kbd-hint {
+        display: none !important;
+      }
+
+      /* 2. 全面屏/刘海/打孔与底部手势条安全区适配 */
+      body {
+        padding-top: env(safe-area-inset-top, 0);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* 3. 顶部导航栏：精细排版，防止右侧设置/题单按钮掉行或被切 */
       .navbar {
-        padding: 10px 12px;
+        padding: max(8px, env(safe-area-inset-top, 8px)) 12px 6px;
         margin-top: 0;
+        gap: 6px;
+      }
+      .brand {
+        gap: 6px;
       }
       .brand-tag {
         display: none;
       }
       .brand-title {
-        font-size: 0.95rem;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: -0.2px;
       }
       .brand-logo {
-        width: 28px;
-        height: 28px;
-        font-size: 1rem;
+        width: 26px;
+        height: 26px;
+        font-size: 0.9rem;
       }
       .nav-center {
-        padding: 4px 10px;
-        gap: 6px;
+        padding: 3px 8px;
+        gap: 4px;
       }
       .progress-pill {
-        font-size: 0.76rem;
+        font-size: 0.74rem;
+        font-weight: 700;
       }
       .progress-bar-tiny {
-        width: 32px;
+        display: none; /* 移动端节省横向空间 */
       }
       .nav-actions {
-        gap: 5px;
+        gap: 4px;
       }
       .btn-stat {
-        padding: 4px 8px;
-        font-size: 0.74rem;
+        padding: 4px 6px;
+        font-size: 0.72rem;
+        border-radius: 6px;
       }
       .btn-icon {
-        padding: 4px 8px;
-        font-size: 0.74rem;
+        padding: 4px 6px;
+        font-size: 0.72rem;
+        border-radius: 6px;
       }
+
+      /* 4. 主容器间距：紧凑精致，底部留足手势避让 */
       .main-container {
-        padding: 4px 10px 80px;
-        gap: 10px;
+        padding: 2px 10px max(80px, calc(env(safe-area-inset-bottom, 0) + 40px));
+        gap: 8px;
       }
-      .pod-card {
-        padding: 16px 14px;
+
+      /* 5. 战区分类导航：轻量滑动胶囊 */
+      .topic-bar-wrapper {
+        padding: 1px 0 3px;
+      }
+      .topic-pill {
+        padding: 5px 12px;
+        font-size: 0.76rem;
         border-radius: 16px;
-        gap: 12px;
+      }
+
+      /* 6. 题号直达卡片：极致轻薄化，把屏幕黄金高度留给当前题目与复盘 */
+      .q-sheet-container {
+        padding: 6px 10px;
+        border-radius: 12px;
+        gap: 5px;
+      }
+      .q-sheet-header {
+        gap: 6px;
+      }
+      .q-sheet-title {
+        font-size: 0.76rem;
+      }
+      .q-sheet-sub {
+        font-size: 0.7rem;
+      }
+      .q-sheet-btn-sm {
+        padding: 3px 7px;
+        font-size: 0.72rem;
+        border-radius: 6px;
+      }
+      .q-chips-scroll {
+        gap: 5px;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .q-chip {
+        min-width: 28px;
+        height: 28px;
+        padding: 0 4px;
+        font-size: 0.74rem;
+        border-radius: 6px;
+      }
+
+      /* 7. 核心作答主卡片 (Pod Card) */
+      .pod-card {
+        padding: 14px 12px;
+        border-radius: 16px;
+        gap: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
       }
       .pod-header {
-        padding-bottom: 12px;
+        padding-bottom: 8px;
       }
       .badge-id, .badge-cat {
-        font-size: 0.75rem;
+        font-size: 0.74rem;
         padding: 2px 7px;
       }
       .timer-badge {
         font-size: 0.82rem;
-        padding: 3px 10px;
+        padding: 3px 9px;
+        border-radius: 18px;
       }
       .question-title-box {
-        font-size: 1.12rem;
+        font-size: 1.05rem;
         line-height: 1.45;
-        min-height: 50px;
+        min-height: auto;
+        padding: 4px 2px;
       }
       .stage-center {
-        min-height: 96px;
-        padding: 12px 6px;
+        min-height: 80px;
+        padding: 10px 4px;
       }
       .wave-wrapper {
-        height: 36px;
-        margin-bottom: 10px;
+        height: 30px;
+        margin-bottom: 8px;
       }
+      .stage-tip {
+        font-size: 0.86rem;
+      }
+      .question-peek-btn {
+        font-size: 0.78rem;
+        padding: 5px 14px;
+        border-radius: 18px;
+      }
+
+      /* 8. 核心操作大按键：大拇指触控黄金比例，纯净无冗余 */
       .btn-main {
-        padding: 13px 16px;
-        font-size: 0.95rem;
+        padding: 14px 16px;
+        font-size: 0.98rem;
+        font-weight: 700;
         border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.22);
       }
       .sub-action-group {
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        margin-top: 2px;
       }
       .sub-action-link {
-        font-size: 0.78rem;
-        padding: 3px 6px;
+        font-size: 0.76rem;
+        padding: 6px 6px;
+        flex: 1;
+        justify-content: center;
+        border-radius: 8px;
+        background: var(--card-inner);
+        border: 1px solid var(--border);
+        white-space: nowrap;
       }
-      .decision-deck {
-        gap: 8px;
-      }
-      .btn-decision {
-        padding: 12px 8px;
-        font-size: 0.88rem;
-        border-radius: 10px;
+
+      /* 9. 复盘区域：高可读性、舒展排版，室外散步看字极度清晰 */
+      .review-zone {
+        margin-top: 4px;
+        padding-top: 10px;
       }
       .scoring-box {
         padding: 10px 12px;
+        border-radius: 10px;
+      }
+      .scoring-title {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
       }
       .scoring-tag {
         font-size: 0.74rem;
         padding: 3px 8px;
+        border-radius: 6px;
+      }
+      .spoken-box {
+        border-radius: 12px;
+      }
+      .spoken-header {
+        padding: 10px 12px;
+      }
+      .spoken-title {
+        font-size: 0.86rem;
+      }
+      .spoken-body {
+        padding: 12px;
       }
       .answer-text-block {
         padding: 12px 14px;
-        font-size: 0.9rem;
-        line-height: 1.62;
+        font-size: 0.96rem;
+        line-height: 1.72;
+        letter-spacing: 0.2px;
       }
       .egg-callout {
         padding: 10px 12px;
         font-size: 0.82rem;
+        border-radius: 10px;
       }
+      .decision-deck {
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .btn-decision {
+        padding: 13px 8px;
+        font-size: 0.9rem;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
       .settings-drawer {
         width: 88vw;
         padding: 18px 16px;
@@ -1482,7 +1610,7 @@
         <div class="stage-tip" id="stageTip">
           <span>👂 面试官正在语音提问，请竖耳倾听...</span>
         </div>
-        <button class="question-peek-btn" id="peekBtn" onclick="togglePeek()">👁️ 盲听中 · 偷看题目文字 (V)</button>
+        <button class="question-peek-btn" id="peekBtn" onclick="togglePeek()">👁️ 盲听中 · 偷看题目文字<span class="kbd-hint"> (V)</span></button>
       </div>
 
       <!-- Cassette Player Bar (If audio recorded) -->
@@ -1495,19 +1623,19 @@
       <div class="action-deck">
         <!-- Main Primary Button (Swaps based on state) -->
         <button class="btn-main primary" id="btnMainAction" onclick="handleMainAction()">
-          <span>⏹️ 我回答完了 · 查看得分复盘 (Space)</span>
+          <span>⏹️ 我回答完了 · 查看得分复盘<span class="kbd-hint"> (Space)</span></span>
         </button>
 
         <!-- Secondary Sub-actions -->
         <div class="sub-action-group" id="subActionGroup">
           <button class="sub-action-link" onclick="speakCurrentQuestion()">
-            <span>🔊 重听题目 (Q)</span>
+            <span>🔊 重听题目<span class="kbd-hint"> (Q)</span></span>
           </button>
           <button class="sub-action-link" onclick="restartAnswering()">
-            <span>🔄 重新作答 (R)</span>
+            <span>🔄 重新作答<span class="kbd-hint"> (R)</span></span>
           </button>
           <button class="sub-action-link" onclick="toggleTimerPause()" id="pauseBtn">
-            <span>⏸️ 暂停计时 (P)</span>
+            <span>⏸️ 暂停计时<span class="kbd-hint"> (P)</span></span>
           </button>
         </div>
       </div>
@@ -6457,7 +6585,7 @@
         stageTip.style.display = 'flex';
         reviewZone.style.display = 'none';
         subGroup.style.display = 'flex';
-        mainBtn.innerHTML = '<span>⏩ 跳过听题 · 直接作答 (Space)</span>';
+        mainBtn.innerHTML = '<span>⏩ 跳过听题 · 直接作答<span class="kbd-hint"> (Space)</span></span>';
 
         if (isBlind && !isPeeking) {
           titleBox.style.display = 'none';
@@ -6479,7 +6607,7 @@
         stageTip.style.display = 'flex';
         reviewZone.style.display = 'none';
         subGroup.style.display = 'flex';
-        mainBtn.innerHTML = '<span>⏹️ 我回答完了 · 查看得分复盘 (Space / Enter)</span>';
+        mainBtn.innerHTML = '<span>⏹️ 我回答完了 · 查看得分复盘<span class="kbd-hint"> (Space / Enter)</span></span>';
 
         if (isBlind && !isPeeking) {
           titleBox.style.display = 'none';
@@ -6616,10 +6744,10 @@
       const peekBtn = document.getElementById('peekBtn');
       if (isPeeking) {
         titleBox.style.display = 'block';
-        peekBtn.textContent = '🙈 遮挡题目文字 (V)';
+        peekBtn.innerHTML = '🙈 遮挡题目文字<span class="kbd-hint"> (V)</span>';
       } else {
         titleBox.style.display = 'none';
-        peekBtn.textContent = '👁️ 盲听中 · 偷看题目文字 (V)';
+        peekBtn.innerHTML = '👁️ 盲听中 · 偷看题目文字<span class="kbd-hint"> (V)</span>';
       }
     }
 
@@ -6701,7 +6829,7 @@
       const timerBadge = document.getElementById('timerBadge');
       timerBadge.classList.remove('urgent');
       isTimerPaused = false;
-      document.getElementById('pauseBtn').innerHTML = '<span>⏸️ 暂停计时 (P)</span>';
+      document.getElementById('pauseBtn').innerHTML = '<span>⏸️ 暂停计时<span class="kbd-hint"> (P)</span></span>';
 
       if (timerTotal <= 0) {
         document.getElementById('timerText').textContent = '无限制';
@@ -6731,7 +6859,7 @@
       if (timerTotal <= 0) return;
       isTimerPaused = !isTimerPaused;
       document.getElementById('pauseBtn').innerHTML = isTimerPaused ?
-        '<span>▶️ 继续计时 (P)</span>' : '<span>⏸️ 暂停计时 (P)</span>';
+        '<span>▶️ 继续计时<span class="kbd-hint"> (P)</span></span>' : '<span>⏸️ 暂停计时<span class="kbd-hint"> (P)</span></span>';
     }
 
     function finishAnsweringAndReview() {
@@ -6833,10 +6961,10 @@
       const nextBtnText = document.getElementById('btnNextTopicText');
       if (nextCat) {
         nextBtn.style.display = 'flex';
-        nextBtnText.textContent = `🔥 立即挺进【${nextCat}】(Enter) →`;
+        nextBtnText.innerHTML = `🔥 立即挺进【${nextCat}】<span class="kbd-hint">(Enter)</span> →`;
       } else {
         nextBtn.style.display = 'flex';
-        nextBtnText.textContent = `🎉 恭喜！全题库已攻克通关！(Enter)`;
+        nextBtnText.innerHTML = `🎉 恭喜！全题库已攻克通关！<span class="kbd-hint">(Enter)</span>`;
       }
 
       const drillBtn = document.getElementById('btnDrillTopicStumbled');
