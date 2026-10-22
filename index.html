@@ -801,23 +801,16 @@
       border: 1px solid rgba(37, 99, 235, 0.2);
       font-weight: 600;
     }
-    /* Code Compare Grid (电脑双栏并排 50/50，手机单栏自适应满宽) */
+    /* Code Compare Stack (电脑与手机端统一采用上下单栏全宽展示，视野开阔从容，代码绝不挤压折行) */
     .code-compare-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       margin: 14px 0;
       width: 100%;
       min-width: 0;
       box-sizing: border-box;
       white-space: normal;
-    }
-
-    @media (max-width: 860px) {
-      .code-compare-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
     }
 
     /* Code Window (Mac Style) */
@@ -860,7 +853,7 @@
     .code-dot.yellow { background: #f59e0b; }
     .code-dot.green { background: #10b981; }
     .code-win-title {
-      font-size: 0.74rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: #94a3b8;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -870,15 +863,15 @@
       text-overflow: ellipsis;
       flex: 1;
       text-align: center;
-      padding: 0 4px;
+      padding: 0 8px;
     }
     .code-copy-btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #cbd5e1;
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 6px;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -897,7 +890,7 @@
     }
     .code-window pre.md-pre {
       margin: 0;
-      padding: 12px 14px;
+      padding: 14px 16px;
       background: #0f172a;
       border: none;
       border-radius: 0;
@@ -909,8 +902,8 @@
     }
     .code-window code.md-codeblock {
       font-family: ui-monospace, SFMono-Regular, "Cascadia Code", "Fira Code", Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      line-height: 1.55;
+      font-size: 0.84rem;
+      line-height: 1.6;
       color: #e2e8f0;
       display: block;
       white-space: pre;
@@ -2224,7 +2217,7 @@
       "设计模式选型（抽象类用于模板方法模式骨架复用 vs 接口用于策略模式与依赖注入解耦）"
     ],
     "egg": "**追问 1（Java 8 核心考点）**：*既然 Java 8 接口已经支持 default 默认方法了，为什么抽象类依然无法被取代？*\n**秒答**：核心原因就在于状态和构造器——虽然接口能写默认实现逻辑了，但接口依然没有构造方法，也依然无法定义普通成员变量来保存状态。一旦业务逻辑需要维护自身的动态属性，就必须依赖抽象类！\n\n**追问 2（架构与设计模式选型）**：*你在项目中什么时候用抽象类？什么时候用接口？*\n**秒答**：\n- **抽象类主要用于【模板方法模式（Template Method）】**：比如在我们做第三方支付（微信/支付宝）或者通用数据导出时，在抽象父类里把参数校验、日志埋点、签名验证等公共骨架流程写死，只留出抽象的 `doPay()` 真正扣款逻辑让子类实现；\n- **接口主要用于【策略模式（Strategy）与模块解耦】**：定义规范能力，配合 Spring 的依赖注入（如 `@Autowired List<PayService>`），随时替换底层实现，彻底解耦。",
-    "deep_dive": "如果从更深层的设计哲学、状态机与架构选型来审视接口与抽象类，核心差异体现在四个维度：\n1. **设计语义与理念**：抽象类体现的是 `is-a`（是什么）的本质归属，用来抽取同类事物的共有骨架；接口体现的是 `can-do`（具备什么能力）的契约规范，强调行为约束。比如“飞机”和“鸟”都可以实现飞行接口，但它们本质不同，绝不会继承同一个抽象父类。\n2. **状态持有与构造器（底层技术区别）**：抽象类可以持有动态状态，拥有普通的实例成员变量，并且拥有构造方法，子类实例化时通过 `super()` 协同初始化父类状态；接口不能持有状态，没有构造方法，内部的所有变量默认都是 `public static final` 的静态常量，无法替实现类维护任何动态属性。\n3. **继承与扩展能力**：为了彻底杜绝多继承引发的“菱形继承冲突”，Java 规定类只能单继承（只能 `extends` 一个抽象类）；但一个类可以多实现多个接口（`implements` 多个能力契约），具备更好的横向扩展性与解耦性。\n4. **设计模式与架构选型**：抽象类最常用于【模板方法模式（Template Method）】，父类把整体业务流程骨架定义死，公共逻辑和状态在父类统一处理，留出抽象方法让子类按需实现；接口则是面向接口编程的核心基石，广泛用于【策略模式（Strategy）】以及微服务模块解耦。\n5. **Java 8+ 演进分析**：虽然 Java 8 之后接口也支持了 `default` 默认方法，但因为接口依然没有构造器且无法保存成员变量状态，所以抽象类在骨架设计体系中依然是不可替代的。\n\n💻 **典型工程代码骨架对照（电脑双栏同屏对照 · 手机自动单栏流式）：**\n\n:::code-compare\n```java [BasePayTemplate.java · 抽象类]\n// 抽象类：用来抽取同类事物的共有骨架，【可以持有动态状态】\npublic abstract class BasePayTemplate {\n    // 1. 可以定义普通成员变量（持有动态状态！）\n    protected String channelName;\n    protected Long orderId;\n\n    // 2. 拥有构造方法（必须存在！子类实例化时通过 super() 协同初始化）\n    public BasePayTemplate(String channelName, Long orderId) {\n        this.channelName = channelName;\n        this.orderId = orderId;\n    }\n\n    // 3. 模板方法（具体实现：把公共的骨架流程直接写死）\n    public void executePay() {\n        validateParam();   // ① 公共参数校验\n        doRealPay();       // ② 核心扣款逻辑（留给子类实现）\n        recordLog();       // ③ 公共埋点日志\n    }\n\n    // 4. 抽象方法：强制微信/支付宝等子类各自去实现\n    protected abstract boolean doRealPay();\n\n    private void validateParam() { /* 通用校验代码... */ }\n    private void recordLog() { /* 通用埋点代码... */ }\n}\n```\n```java [PayService.java · 接口规范]\n// 接口：只定义能力与规范，【无法维护任何动态状态】\npublic interface PayService {\n    // 1. 变量默认全是 public static final（全局静态常量，不能定义普通成员变量）\n    String SUCCESS_CODE = \"200\";\n\n    // 2. 绝对没有构造方法！（写构造方法会编译报错）\n\n    // 3. 核心契约方法（抽象方法：只约定入参和返回值，强制实现类遵守）\n    boolean pay(BigDecimal amount);\n\n    // 4. Java 8+ default 默认方法（携带默认实现，便于平滑扩展接口）\n    default void printReceipt() {\n        System.out.println(\"打印通用电子收据...\");\n    }\n\n    // 5. Java 8+ static 静态工具方法\n    static boolean checkNetwork() {\n        return true;\n    }\n}\n```\n:::",
+    "deep_dive": "如果从更深层的设计哲学、状态机与架构选型来审视接口与抽象类，核心差异体现在四个维度：\n1. **设计语义与理念**：抽象类体现的是 `is-a`（是什么）的本质归属，用来抽取同类事物的共有骨架；接口体现的是 `can-do`（具备什么能力）的契约规范，强调行为约束。比如“飞机”和“鸟”都可以实现飞行接口，但它们本质不同，绝不会继承同一个抽象父类。\n2. **状态持有与构造器（底层技术区别）**：抽象类可以持有动态状态，拥有普通的实例成员变量，并且拥有构造方法，子类实例化时通过 `super()` 协同初始化父类状态；接口不能持有状态，没有构造方法，内部的所有变量默认都是 `public static final` 的静态常量，无法替实现类维护任何动态属性。\n3. **继承与扩展能力**：为了彻底杜绝多继承引发的“菱形继承冲突”，Java 规定类只能单继承（只能 `extends` 一个抽象类）；但一个类可以多实现多个接口（`implements` 多个能力契约），具备更好的横向扩展性与解耦性。\n4. **设计模式与架构选型**：抽象类最常用于【模板方法模式（Template Method）】，父类把整体业务流程骨架定义死，公共逻辑和状态在父类统一处理，留出抽象方法让子类按需实现；接口则是面向接口编程的核心基石，广泛用于【策略模式（Strategy）】以及微服务模块解耦。\n5. **Java 8+ 演进分析**：虽然 Java 8 之后接口也支持了 `default` 默认方法，但因为接口依然没有构造器且无法保存成员变量状态，所以抽象类在骨架设计体系中依然是不可替代的。\n\n💻 **典型工程代码骨架对照（全宽上下精读）：**\n\n:::code-compare\n```java [BasePayTemplate.java · 抽象类]\n// 抽象类：用来抽取同类事物的共有骨架，【可以持有动态状态】\npublic abstract class BasePayTemplate {\n    // 1. 可以定义普通成员变量（持有动态状态！）\n    protected String channelName;\n    protected Long orderId;\n\n    // 2. 拥有构造方法（必须存在！子类实例化时通过 super() 协同初始化）\n    public BasePayTemplate(String channelName, Long orderId) {\n        this.channelName = channelName;\n        this.orderId = orderId;\n    }\n\n    // 3. 模板方法（具体实现：把公共的骨架流程直接写死）\n    public void executePay() {\n        validateParam();   // ① 公共参数校验\n        doRealPay();       // ② 核心扣款逻辑（留给子类实现）\n        recordLog();       // ③ 公共埋点日志\n    }\n\n    // 4. 抽象方法：强制微信/支付宝等子类各自去实现\n    protected abstract boolean doRealPay();\n\n    private void validateParam() { /* 通用校验代码... */ }\n    private void recordLog() { /* 通用埋点代码... */ }\n}\n```\n```java [PayService.java · 接口规范]\n// 接口：只定义能力与规范，【无法维护任何动态状态】\npublic interface PayService {\n    // 1. 变量默认全是 public static final（全局静态常量，不能定义普通成员变量）\n    String SUCCESS_CODE = \"200\";\n\n    // 2. 绝对没有构造方法！（写构造方法会编译报错）\n\n    // 3. 核心契约方法（抽象方法：只约定入参和返回值，强制实现类遵守）\n    boolean pay(BigDecimal amount);\n\n    // 4. Java 8+ default 默认方法（携带默认实现，便于平滑扩展接口）\n    default void printReceipt() {\n        System.out.println(\"打印通用电子收据...\");\n    }\n\n    // 5. Java 8+ static 静态工具方法\n    static boolean checkNetwork() {\n        return true;\n    }\n}\n```\n:::",
     "answer": "“面试官，关于接口和抽象类的核心区别，我平时主要从三点来理解：\n**第一是定位不同**：\n抽象类表示的是它到底属于哪一个类别，用来抽取同类事物的共有骨架；\n而接口强调的是它具备什么能力或功能。比如飞机和鸟都能飞，它们都可以实现飞行接口，但它们根本不是同一个类别，不可能继承同一个父类。\n**第二是能否持有状态**：\n抽象类有构造方法，可以定义普通成员变量，能替子类维护动态状态；\n而接口没有构造方法，里面的变量默认全都是静态常量，无法替实现类维护任何状态。\n**第三是继承与扩展**：\n一个类只能继承一个抽象类，但可以同时实现多个接口。所以在做系统设计时，面向接口开发更容易做到模块解耦。”",
     "extra": "",
     "has_spoken": true
