@@ -1898,9 +1898,9 @@
               <span class="deep-dive-title">深度原理解析与长文参考</span>
               <span class="deep-dive-tag">底层通透 · 随时查阅</span>
             </div>
-            <span class="deep-dive-chevron" id="deepDiveChevron">▼ 展开精读</span>
+            <span class="deep-dive-chevron" id="deepDiveChevron">▲ 收起精读</span>
           </button>
-          <div class="deep-dive-body" id="deepDiveBody" style="display:none;"></div>
+          <div class="deep-dive-body" id="deepDiveBody" style="display:block;"></div>
         </div>
       </div>
     </div>
@@ -7403,8 +7403,8 @@
       const deepDiveChevron = document.getElementById('deepDiveChevron');
       if (q.deep_dive) {
         deepDiveBody.innerHTML = renderMarkdown(q.deep_dive);
-        deepDiveBody.style.display = 'none';
-        if (deepDiveChevron) deepDiveChevron.textContent = '▼ 展开精读';
+        deepDiveBody.style.display = 'block';
+        if (deepDiveChevron) deepDiveChevron.textContent = '▲ 收起精读';
         deepDiveCard.style.display = 'block';
       } else {
         deepDiveCard.style.display = 'none';
