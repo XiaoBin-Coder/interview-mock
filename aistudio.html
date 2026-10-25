@@ -263,6 +263,24 @@
       overflow: hidden;
     }
 
+    
+    /* Sidebar Resizer Splitter */
+    .sidebar-resizer {
+      width: 6px;
+      background: transparent;
+      cursor: col-resize;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 50;
+      transition: background 0.15s;
+      margin-left: -3px;
+      margin-right: -3px;
+    }
+    .sidebar-resizer:hover,
+    .sidebar-resizer.resizing {
+      background: var(--accent-blue);
+    }
+
     /* Left Sidebar */
     .sidebar {
       width: 330px;
@@ -271,7 +289,7 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      transition: width 0.25s ease, transform 0.25s ease;
+      transition: transform 0.25s ease;
     }
 
     .sidebar-header {
@@ -1031,6 +1049,9 @@
       </div>
     </aside>
 
+    <!-- Resizer Splitter -->
+    <div class="sidebar-resizer" id="sidebarResizer" title="左右拖动调节侧边栏宽度"></div>
+
     <!-- Main Content Canvas -->
     <main class="main-canvas" id="mainCanvas">
       <div class="canvas-container">
@@ -1135,6 +1156,46 @@
     let selectedCat = '全部';
     let searchQuery = '';
 
+    
+    // Sidebar Resizer Functionality
+    function initSidebarResizer() {
+      const resizer = document.getElementById('sidebarResizer');
+      const sidebar = document.getElementById('sidebar');
+      if (!resizer || !sidebar) return;
+
+      const savedWidth = localStorage.getItem('aistudio_sidebar_width');
+      if (savedWidth) {
+        sidebar.style.width = savedWidth + 'px';
+      }
+
+      let isResizing = false;
+
+      resizer.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        resizer.classList.add('resizing');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        const newWidth = e.clientX;
+        if (newWidth >= 220 && newWidth <= 650) {
+          sidebar.style.width = newWidth + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isResizing) {
+          isResizing = false;
+          resizer.classList.remove('resizing');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          localStorage.setItem('aistudio_sidebar_width', parseInt(sidebar.style.width));
+        }
+      });
+    }
+
     // Theme Management (Light by default, as requested!)
     function initTheme() {
       const savedTheme = localStorage.getItem('aistudio_theme') || 'light';
@@ -1161,6 +1222,7 @@
     // Init
     document.addEventListener('DOMContentLoaded', () => {
       initTheme();
+      initSidebarResizer();
 
       // Check last viewed question from localStorage
       const lastQ = localStorage.getItem('aistudio_last_qid');
@@ -1240,8 +1302,6 @@
         let statusTag = '';
         if (isCustom) {
           statusTag = '<span class="q-status-tag q-status-custom">✨ 已归档</span>';
-        } else if (isPolished) {
-          statusTag = '<span class="q-status-tag q-status-polished">🟢 精读</span>';
         }
 
         return `
