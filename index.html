@@ -2540,6 +2540,12 @@
       <div class="review-zone" id="reviewZone">
         <!-- Polished Spoken Answer Layout (When 40s spoken answer exists) -->
         <div id="polishedReviewBlock" style="display:none; flex-direction:column; gap:12px;">
+          <details class="pre-knowledge-card" id="preKnowledgeCard" style="display:none; background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.25); border-radius:12px; padding:10px 14px; margin-bottom:12px;">
+            <summary style="font-weight:700; color:#6366f1; font-size:0.9rem; user-select:none; cursor:pointer; display:flex; align-items:center; gap:6px;">
+              💡 题前通识 · 零基础心智建立（点击展开复习原话）
+            </summary>
+            <div id="preKnowledgeContent" style="margin-top:10px; font-size:0.875rem; color:var(--text); line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; border-top:1px dashed rgba(99,102,241,0.2); padding-top:8px;"></div>
+          </details>
           <!-- Scoring Anchors Tags -->
           <div class="scoring-box" id="scoringBox">
             <div class="scoring-title">🎯 大厂核心得分关键词（必须涵盖）：</div>
@@ -2888,6 +2894,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "`==` 是操作符，基本类型比值，引用类型比地址。`equals` 是 Object 的方法，默认比地址，重写后比内容。为什么必须同时重写 `hashCode`？因为哈希容器（HashMap / HashSet）是先看哈希码定位桶位的。若不重写，两个相同内容的对象得到的哈希码不同，会导致它们落在不同的桶里，使去重和查找全部失效，所以必须成对重写。",
+    "pre_knowledge": "",
     "spoken_answer": "“首先，`==` 是操作符，基本数据类型**比较的是值**，引用数据类型**比较的是内存地址**。\n而 `equals` 是 Object 类的方法，底层**默认比较的也是地址值**。如果我们想要让两个相同内容的对象被判定为相等，就要**重写 `equals` 方法**。\n那为什么必须连带重写 `hashCode` 呢？\n因为 `hashCode` 默认是通过**内存地址值**计算的。在我们使用 HashMap、HashSet 这些集合的时候，如果不重写 `hashCode`，那么两个相同内容的对象得到的哈希码就会不同，导致它们**落在不同的桶里**，使得集合的**去重和查找全部失效**。\n所以必须要**成对重写 hashCode**，让相同内容的对象得到**相同的哈希码**。”",
     "core_points": "",
     "checklist": [
@@ -2911,6 +2918,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "这三者的区别主要看两个维度：可变性，以及线程安全与性能。String 一旦创建就不可改变，底层是 final 数组，后续修改拼接都会在堆里建新对象；StringBuilder 与 StringBuffer 创建后可在底层数组上原地修改、动态扩容。并发方面：String 天然线程安全，适合常量与少量拼接；StringBuffer 方法加了 synchronized 同步锁，多线程并发共享修改才用；StringBuilder 没加锁性能最高，平时绝大部分单线程业务直接选它。",
+    "pre_knowledge": "",
     "spoken_answer": "“面试官，这三者的区别主要看两个核心维度：**可变性**，以及**线程安全与性能**：\n**第一，可变性方面：**\n`String` 一旦创建就**不可改变**，底层是 **final 数组**。后续任何修改或拼接，本质都是在**堆里建新对象**；\n而 `StringBuilder` 和 `StringBuffer` 创建后可以**原地修改**、**动态扩容**，**不会频繁产生临时对象**。\n**第二，线程安全与性能方面：**\n`String` 因为不可变、只读不写，所以**天然线程安全**，平时适合做**常量和少量拼接**；\n而那两个可变类里：\n`StringBuffer` 的方法加了 **synchronized 同步锁**，线程安全但有**锁开销**，**多线程并发修改共享变量**才用它；\n`StringBuilder` 底层**没加锁性能最高**，平时**单线程业务首选**。”",
     "core_points": "",
     "checklist": [
@@ -2934,6 +2942,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "本质就为了两件事：极致的性能，以及底层的安全。性能方面：Java 在堆里设计了字符串常量池，只有 String 不可变，多个变量才能安全引用同一对象节省内存；且内容不变 Hash 码固定，底层能放心缓存，做 HashMap 的 Key 寻址极快。安全方面：不可变对象只读不写，跨线程天然安全无锁；且类加载路径、数据库密码等核心入参防止在底层被恶意篡改。",
+    "pre_knowledge": "",
     "spoken_answer": "“面试官，官方把 `String` 设计成不可变，底子上其实就为了两件事：**极致的性能**，以及**底层的安全**：\n**首先看性能方面**：\n第一是**常量池复用**。Java 在堆里专门设计了字符串常量池。只有 `String` 不可变，多个变量才能**安全引用同一个对象**；如果它是可变的，一个地方改了，其他引用它的变量全会被**错误篡改**，常量池就彻底失效了。\n第二是**Hash 缓存**。正因为内容不可变，它的 **Hash 码固定不变**，底层才能放心地把 **hash 缓存起来**。做 HashMap 的 Key **不需要反复重算**，寻址效率极高。\n**再看安全方面**：\n第一是**天然线程安全**。不可变对象**只读不写**，多线程并发下**天然安全无锁**；\n第二是**系统防篡改**。像类加载路径、数据库密码这些核心参数都是 String 传递的，只有不可变，才能防止关键配置在底层被**外部恶意篡改**。”",
     "core_points": "",
     "checklist": [
@@ -2957,6 +2966,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "“面试官，关于它们的核心区别，主要体现在三点：\n**第一是存储与性能**：基本类型的局部变量**直接存栈上**，没有额外的内存开销，运算性能极高；而包装类型**存在堆里**。\n**第二是集合泛型**：像 `List`、`Map` 这种集合容器，**不能直接放基本类型**，必须使用**包装类型**，比如 `List<Integer>`。\n**第三是默认值与业务语义**：基本类型默认是 **0**，包装类型默认是 **null**。在实体类和接口入参里推荐用包装类，能明确区分出：**‘用户传的值是 0’**，还是**‘用户压根没填，字段是 null’**。\n聊完区别，再看 **Integer 缓存池的坑**：\n官方默认预先缓存了 **-128 到 127** 之间的对象。\n比如两个值为 100 的 Integer，因为**命中缓存复用了同一个对象**，用双等号比就是 **true**；但如果换成 200，超出范围底层会在堆里 **new 两个新对象**，用双等号比就直接变成 **false** 了！\n所以在平时的项目开发中，包装类型比较必须要用 **equals**，不能用**双等号**。”",
     "core_points": "存储位置（栈 vs 堆）、默认值与业务语义；集合泛型支持；`IntegerCache` 缓存区间（-128 ~ 127）导致的 `==` 判等陷阱与规约。",
     "checklist": [
@@ -2980,6 +2990,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "“面试官，关于接口和抽象类的核心区别，我平时主要从三点来理解：\n**第一是定位不同**：\n抽象类表示它**到底属于哪一个类别**，用来抽取同类事物的**共有骨架**；\n而接口强调的是它**具备什么能力或功能**。比如**飞机和鸟都能飞**，它们都可以实现飞行接口，但它们根本不是同一个类别，**不可能继承同一个父类**。\n**第二是能否持有状态**：\n抽象类**有构造方法**，可以定义普通成员变量，能替子类**维护动态状态**；\n而接口**没有构造方法**，里面的变量默认全都是**静态常量**，**无法替实现类维护任何状态**。\n**第三是继承与扩展**：\n一个类只能**单继承**一个抽象类，但可以同时**多实现**多个接口。所以在做系统设计时，面向接口开发更容易做到**模块解耦**。”",
     "core_points": "设计定位（同类别共有骨架 vs 具备能力或功能）；状态与构造器（能否持有动态状态与构造方法）；单继承与多实现机制；Java 8+ `default` 方法背景与设计模式选型。",
     "checklist": [
@@ -3002,6 +3013,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "“面试官，浅拷贝和深拷贝的根本区别，就在于**对内部嵌套引用对象的处理方式不同**：\n浅拷贝只复制基本类型，内部对象**仅仅复制了指针地址**。新老对象共享同一个子对象，修改内部属性时会**产生静默数据污染**；\n而深拷贝会把所有层级的嵌套对象，在堆里**递归重新创建一遍全新内存**，新老对象彻底**物理隔离、互不影响**。\n在实际生产中，我们**绝不优先使用原生 clone()**，因为语法繁琐且**绕过了构造函数**。轻量场景首选**拷贝构造函数**，对象复杂时直接借助 **Jackson 做 JSON 序列化反序列化**搞定。”",
     "core_points": "引用传递（只复制栈指针）vs 递归对象克隆（堆中开辟全新独立内存）；`String` 不可变特性在拷贝中的表现；工程避坑（`BeanUtils` 浅拷贝陷阱、循环引用栈溢出）；生产选型（Jackson / 拷贝构造函数）。",
     "checklist": [
@@ -3020,23 +3032,26 @@
   },
   {
     "id": 7,
-    "title": "Java 异常体系中，运行时异常与受检异常有什么本质区别？",
-    "speech_title": "Java 异常体系中，运行时异常与受检异常有什么本质区别？",
+    "title": "Java 异常体系中，运行时异常与受检异常有什么本质区别？实际业务中如何设计异常体系？",
+    "speech_title": "Java 异常体系中，运行时异常与受检异常有什么本质区别？实际业务中如何设计异常体系？",
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
-    "spoken_answer": "",
-    "core_points": "`Throwable` 顶层体系（`Error` 系统级崩溃 vs `Exception` 程序级异常）；受检异常（Checked，强制捕获或声明 throws）vs 运行时异常（Unchecked，逻辑 Bug）；事务回滚与全局异常捕获规范。",
+    "pre_knowledge": "在面试中回答这个问题，不要只干巴巴地背一句“一个编译器强制处理，一个不强制”。建议采用**“体系定位 ➔ 编译器行为 ➔ 设计意图与本质 ➔ 工程实践与避坑”**的结构，层层递进：\n\n**一、 体系定位与编译期行为（表层区别）**\n* **受检异常（Checked Exception）**：指的是直接继承自 `Exception`、但**不属于** `RuntimeException` 及其子类的所有异常（如 `IOException`、`SQLException`）。编译器严格执行“处理或声明”（Catch or Declare）契约，代码中**必须显式用 `try-catch` 捕获或者用 `throws` 抛出**，否则无法通过编译。\n* **运行时异常（Unchecked / RuntimeException）**：指的是继承自 `RuntimeException` 及其子类的异常（如 `NullPointerException`、`IndexOutOfBoundsException`）。编译器完全**不强制**要求显式处理，可以不捕获也不在方法签名上声明。\n\n**二、 设计意图与责任归属（最关键的“本质区别”）**\n1. **受检异常的本质是“外部环境问题与可恢复性故障”**：\n   * 比如文件不存在（`FileNotFoundException`）或者数据库连接超时。这些往往不是代码写错了，而是受外部环境、I/O 等不可控因素影响。\n   * **Java 设计者的初衷**是：这类问题**大概率是可以恢复或兜底的**，因此通过编译器强迫调用方去编写容错逻辑（比如重试、降级走备用方案，或者给用户友好的提示）。\n2. **运行时异常的本质是“代码层面的逻辑 Bug 与契约破坏”**：\n   * 比如入参传了 `null` 导致空指针、数组下标越界。这些属于程序员自己的编码疏漏或调用前置条件不满足。\n   * 这类问题**在运行时通常无法自愈**，捕获它没有实际意义。正确的解决方式是**修正代码 Bug 或做好前置防御性校验**（比如 `if (obj != null)`），而不是指望靠 `try-catch` 去擦屁股。\n\n**三、 现代工程实践与框架演进（升华与大局观）**\n* 在现代工程实践中，**受检异常其实越来越不受欢迎**，几乎所有后来的现代语言（如 C#、Kotlin、Go、Rust）都放弃了受检异常机制。\n* 在实际开发中，过多的受检异常会：\n  1. **破坏代码的可扩展性与签名稳定性**：底层抛出一个新的受检异常，整条调用链路上的接口方法签名全得加上 `throws`，改动极其痛苦。\n  2. **诱导开发者“吞掉异常”**：很多开发者为了应付编译，写出了 `catch (Exception e) {}` 的空实现，反而掩盖了真正的问题。\n* 因此，**现代流行框架（如 Spring、MyBatis）普遍都在推行“异常非受检化”**。例如：Spring 将 JDBC 原生繁琐的受检异常 `SQLException`，全部重新封装成了非受检的 `DataAccessException` 体系，把是否捕获的自由度交还给业务开发者。\n\n**四、 生产避坑加分项：Spring 事务机制**\n* **Spring 的声明式事务 `@Transactional` 默认只在遇到 `RuntimeException` 和 `Error` 时才会自动回滚！**\n* 如果业务逻辑中抛出了一个**受检异常**（比如业务自定义继承自 `Exception`，或者原生的 `IOException`），Spring 默认**不会回滚事务**，在生产中极易引发数据不一致的 Bug。因此在实际开发中，必须显式配置 `@Transactional(rollbackFor = Exception.class)` 来覆盖这一默认行为。",
+    "spoken_answer": "“面试官，两者的核心区别，本质在于对**故障性质和责任归属的界定不同**：\n**受检异常**：继承自 `Exception`。它代表**外部环境不可控与可恢复故障**，比如网络超时或文件丢失。设计初衷是**强迫调用方编写容错降级逻辑**，所以编译器**强制要求显式捕获或声明抛出**；\n**运行时异常**：继承自 `RuntimeException`。它代表**程序员自身的代码逻辑 Bug**，比如空指针或越界。这类问题在**运行时通常无法自愈**，必须依靠前置**防御性校验去规避**，编译器完全不干预。\n在现代架构中，受检异常会**严重破坏方法签名稳定性**，所以 Spring 把底层异常全部非受检化，我们生产中自定义业务异常也**全部继承 RuntimeException**。”",
+    "core_points": "`Throwable` 顶层体系；编译期强制契约（Catch or Declare）vs 运行期逻辑缺陷；设计哲学（外部可恢复环境 vs 不可恢复代码 Bug）；Spring `@Transactional` 默认回滚陷阱（`rollbackFor = Exception.class`）；企业级统一异常处理（`BizException` + `@RestControllerAdvice`）。",
     "checklist": [
-      "`Throwable` 顶层体系（`Error` 系统级崩溃 vs `Exception` 程序级异常）",
-      "受检异常（Checked，强制捕获或声明 throws）vs 运行时异常（Unchecked，逻辑 Bug）",
-      "事务回滚与全局异常捕获规范。"
+      "核心界定认知（本质在于故障性质与责任归属的界定不同）",
+      "受检异常定位（外部不可控的可恢复故障，编译器强迫编写容错逻辑）",
+      "运行时异常定位（自身代码逻辑Bug，运行时无法自愈，靠防御性校验规避）",
+      "现代架构演进趋势（破坏签名稳定性并诱导吞掉异常，现代框架全面推行异常非受检化）",
+      "企业级落地实践（业务自定义异常统一继承 RuntimeException + 全局拦截器）"
     ],
-    "egg": "",
-    "deep_dive": "",
-    "answer": "`Throwable` 顶层体系（`Error` 系统级崩溃 vs `Exception` 程序级异常）；受检异常（Checked，强制捕获或声明 throws）vs 运行时异常（Unchecked，逻辑 Bug）；事务回滚与全局异常捕获规范。",
+    "egg": "**追问 1（Spring 事务回滚巨坑）**：*在 Service 方法上加了 `@Transactional` 注解，如果方法内部抛出了受检异常，事务会回滚吗？生产中怎么避坑？*\n**秒答**：\n**默认绝对不会回滚！**\nSpring 的 `@Transactional` 默认回滚策略是：**只在捕获到 `RuntimeException` 或 `Error` 时才触发事务回滚**！\n如果业务抛出的是受检异常（比如 `IOException`、`SQLException` 或直接 `throw new Exception()`），Spring 默认认为这是业务预期内可恢复的流程，**事务会直接提交（Commit）**，导致严重的数据脏写（比如钱扣了但后续抛受检异常导致数据不一致）。\n生产规范强制要求：声明事务必须显式配置 **`@Transactional(rollbackFor = Exception.class)`**，确保所有异常一律回滚。\n\n**追问 2（架构深度思考与语言演进）**：*既然受检异常能强制提醒程序员处理错误，为什么像 Kotlin、C#、Go 彻底废弃了它，Spring 也把底层受检异常全部包装成 RuntimeException？*\n**秒答**：\n**因为受检异常在大型工程实践中带来了两大严重恶果：**\n- **1. 严重破坏接口契约与方法签名稳定性**：底层 DAO 改动抛出一个受检异常，整条链路上的 Service、Controller、甚至 Feign 接口全部得改签名加上 `throws`，牵一发而动全身；\n- **2. 诱导产生恶劣的坏代码（吞掉异常）**：满屏被逼写出的 `try-catch` 除了打印日志，上层代码根本无法真正修复物理故障，反而诱导程序员写空的 `catch {}` 吞掉异常，造成排查灾难。\n因此现代架构普遍推崇 **‘非受检业务异常 + 顶层统一全局拦截兜底’** 的解耦模式。",
+    "deep_dive": "1. **【模块一：主问题深度剖析】Throwable 家族树与 Java 之父的设计哲学**：\n- **家族树划分**：Java 所有错误和异常的根是 `Throwable`，其下分化为 `Error` 和 `Exception`。`Error`（如 `OutOfMemoryError`、`StackOverflowError`）代表 JVM 级不可恢复的严重故障，应用程序不应捕获；`Exception` 代表应用程序级的问题，分为受检异常（如 `IOException`）与非受检异常（`RuntimeException` 及其子类）。\n- **设计初衷的本质分歧**：受检异常代表“外部依赖环境的不可抗力”，设计目的是为了让调用方具备“容错机制”（如重试、备用节点）；而运行时异常代表“内部代码缺陷”，无法通过 catch 真正自愈，唯有靠防御性编程（如判空断言、入参前置校验）消除 Bug。\n\n2. **【模块二：追问 1 深度拆解】Spring `@Transactional` 默认回滚源码机制与生产红线**：\n- **底层源码原理**：Spring 事务切面中，`RuleBasedTransactionAttribute.rollbackOn(Throwable ex)` 底层默认调用 `DefaultTransactionAttribute` 的判定规则：`return (ex instanceof RuntimeException || ex instanceof Error);`。这意味着只要抛出的异常是直接派生自 `Exception` 的非运行时异常，判定结果为 `false`，事务拦截器会正常执行 `commitTransactionAfterReturning`！\n- **生产红线守则**：凡是标注 `@Transactional` 的方法，必须显式声明 `rollbackFor = Exception.class`，防范嵌套抛出受检异常导致分布式/单机事务静默提交。\n\n3. **【模块三：追问 2 深度拆解】企业级统一异常体系架构（BizException + @RestControllerAdvice）**：\n- **业务异常定义原则**：生产严禁直接抛出泛型的 `Exception`，严禁业务异常继承受检异常。必须统一定义继承自 `RuntimeException` 的 `BizException`，内含 `code`（错误码）与 `message`（面向前端的友好提示）。\n- **全局统一兜底**：Controller 层绝不手动写 `try-catch`。由 `@RestControllerAdvice` 结合 `@ExceptionHandler` 统一将未捕获的运行时异常包装为标准的统一响应体 `Result.fail(code, msg)`，实现业务逻辑与异常治理的彻底解耦。\n\n💻 **典型工程代码骨架对照（全宽上下精读）：**\n\n:::code-compare\n```java [TransactionalRollbackTrap.java · 事务静默提交翻车现场]\n// 演示：漏配 rollbackFor 导致事务未回滚的重大事故\n@Service\npublic class OrderService {\n    @Autowired\n    private AccountMapper accountMapper;\n\n    // 💥 致命陷阱：默认只回滚 RuntimeException 和 Error\n    @Transactional\n    public void executeOrder(Long userId, BigDecimal amount) throws Exception {\n        // 1. 扣减用户余额（数据库执行成功）\n        accountMapper.deductBalance(userId, amount);\n\n        // 2. 模拟调用第三方物流/通知接口，发生外部 IO 异常（受检异常！）\n        if (true) {\n            throw new IOException(\"第三方物流系统连接超时\");\n        }\n\n        // 💥 灾难结果：IOException 是受检异常，Spring 默认不回滚！\n        // 用户的钱被真实扣除了，但订单没有生成，事务直接被静默 commit！\n    }\n}\n```\n```java [GlobalExceptionBestPractice.java · 企业级全局异常最佳实践]\n// 生产规范：继承 RuntimeException + 显式声明 rollbackFor + 全局统一拦截\npublic class GlobalExceptionBestPractice {\n\n    // 1. 自定义业务异常：必须继承 RuntimeException！\n    public static class BizException extends RuntimeException {\n        private final Integer code;\n        public BizException(Integer code, String message) {\n            super(message);\n            this.code = code;\n        }\n        public Integer getCode() { return code; }\n    }\n\n    // 2. 事务规范：必须显式加上 rollbackFor = Exception.class\n    @Service\n    public static class OrderServiceImpl {\n        @Transactional(rollbackFor = Exception.class) // 🛡️ 稳妥防线\n        public void executeOrderSafe(Long userId, BigDecimal amount) {\n            // 业务校验失败直接抛 BizException\n            if (amount.compareTo(BigDecimal.ZERO) <= 0) {\n                throw new BizException(40001, \"扣款金额必须大于0\");\n            }\n        }\n    }\n\n    // 3. 全局统一拦截器：Controller 层零 try-catch\n    @RestControllerAdvice\n    public static class GlobalExceptionHandler {\n        @ExceptionHandler(BizException.class)\n        public Result<?> handleBiz(BizException e) {\n            return Result.fail(e.getCode(), e.getMessage());\n        }\n\n        @ExceptionHandler(Exception.class)\n        public Result<?> handleUnknown(Exception e) {\n            // 系统级未知异常统一打印告警日志并兜底\n            return Result.fail(500, \"系统繁忙，请稍后再试\");\n        }\n    }\n}\n```\n:::",
+    "answer": "“面试官，两者的核心区别，本质在于对**故障性质和责任归属的界定不同**：\n**受检异常**：继承自 `Exception`。它代表**外部环境不可控与可恢复故障**，比如网络超时或文件丢失。设计初衷是**强迫调用方编写容错降级逻辑**，所以编译器**强制要求显式捕获或声明抛出**；\n**运行时异常**：继承自 `RuntimeException`。它代表**程序员自身的代码逻辑 Bug**，比如空指针或越界。这类问题在**运行时通常无法自愈**，必须依靠前置**防御性校验去规避**，编译器完全不干预。\n在现代架构中，受检异常会**严重破坏方法签名稳定性**，所以 Spring 把底层异常全部非受检化，我们生产中自定义业务异常也**全部继承 RuntimeException**。”",
     "extra": "",
-    "has_spoken": false
+    "has_spoken": true
   },
   {
     "id": 8,
@@ -3045,6 +3060,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "`finally` 无论异常与否必定执行的时机；`finally` 中 return 覆盖 try 块返回值的经典陷阱；`try-with-resources` 基于 `AutoCloseable` 接口的语法糖及字节码实现。",
     "checklist": [
@@ -3065,6 +3081,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "动态数组（连续内存，$O(1)$ 随机访问）vs 双向链表（链式节点，插入删除无需搬移但无法随机寻址）；`ArrayList` 初始容量 10、1.5 倍扩容算法（`oldCapacity + (oldCapacity >> 1)`）与 `System.arraycopy`。",
     "checklist": [
@@ -3084,6 +3101,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JDK 7（Entry 数组 + 单链表）vs JDK 8（Node 数组 + 单链表 + 红黑树）；解决冲突时“头插法”升级为“尾插法”（彻底杜绝并发扩容环形链表死循环）。",
     "checklist": [
@@ -3103,6 +3121,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "根据 hash 定位桶位；若为空直接创建，非空先比 hash 再比 equals；树化双重阈值（单桶链表长度 $\\ge 8$ 且总数组容量 $\\ge 64$）；红黑树节点减少到 6 时退化回链表。",
     "checklist": [
@@ -3124,6 +3143,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "利用按位与 `(n - 1) & hash` 替代低效的取模 `%`；JDK 8 巧妙利用高位掩码 `(hash & oldCap)` 判零，将节点直接拆为低位链与高位链，无需重新计算 hash（避免 rehash）。",
     "checklist": [
@@ -3143,6 +3163,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JDK 7 并发扩容导致环形链表死循环（CPU 100%）；JDK 8 并发 `putVal` 导致的数据覆盖与丢失；并发 `++size` 导致计数不准。",
     "checklist": [
@@ -3163,6 +3184,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JDK 7 分段锁机制（`Segment` 继承自 `ReentrantLock`）；JDK 8 放弃分段锁，升级为细粒度锁（无冲突 CAS 写入，有冲突使用 `synchronized` 锁定链表/红黑树首节点），并发度大幅跃升。",
     "checklist": [
@@ -3182,6 +3204,7 @@
     "category": "Java 基础与集合",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "`modCount` 计数器与 `expectedModCount` 校验机制；在增强 for 循环中调用 `list.remove()` 导致两者不一致，抛出 `ConcurrentModificationException`；标准解决方案（`iterator.remove()` 或并发容器 `CopyOnWriteArrayList`）。",
     "checklist": [
@@ -3202,6 +3225,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "资源分配基本单位（独立地址空间与堆栈）vs CPU 调度基本单位；用户态与内核态特权级差异；上下文切换时保存并恢复 CPU 寄存器与程序计数器（PC）的高昂开销。",
     "checklist": [
@@ -3222,6 +3246,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "OS 五态 vs Java Thread.State 六态；BLOCKED（阻塞在进入或重入 synchronized 锁的等待队列中）vs WAITING（主动调用 wait/join，等待其他线程显式 notify 唤醒通知）。",
     "checklist": [
@@ -3241,6 +3266,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "频繁创建销毁内核线程的巨大开销；缺乏全局管控容易无限制创建线程，导致系统内存耗尽与 OOM（Java 默认一个线程栈 1MB）；线程复用与最大并发流量控制。",
     "checklist": [
@@ -3261,6 +3287,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "corePoolSize、maximumPoolSize、keepAliveTime、unit、workQueue、threadFactory、handler；流转口诀：**“先核心，满则排队进队列；队列满，建非核心救急；超出最大，按策略拒绝”**。",
     "checklist": [
@@ -3282,6 +3309,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "AbortPolicy（直接抛 RejectedExecutionException）、CallerRunsPolicy（退回让调用者主线程跑，起到减速限流作用）、DiscardPolicy（静默丢弃不报错）、DiscardOldestPolicy（丢弃队列中最老的任务）；生产实战常通过自定义 Handler 实现持久化落库（或发 MQ）并告警告急，等待后续重试补偿。",
     "checklist": [
@@ -3301,6 +3329,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "FixedThreadPool / SingleThreadExecutor 底层使用了无界阻塞队列 `LinkedBlockingQueue`（默认容量 `Integer.MAX_VALUE`），堆积大量任务导致 OOM；CachedThreadPool 允许创建的最大线程数是 `Integer.MAX_VALUE`，高并发下疯狂 new 线程导致 CPU 跑满或 OOM。",
     "checklist": [
@@ -3320,6 +3349,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JVM 对象头 Mark Word 与 Monitor 监视器锁（`monitorenter` / `monitorexit` 字节码指令）；锁升级单向不可逆：无锁 $\\rightarrow$ 偏向锁 $\\rightarrow$ 轻量级锁（CAS 自旋分配 Lock Record） $\\rightarrow$ 重量级锁（操作系统 Mutex 互斥原语，线程挂起态）；*(实战彩蛋：JDK 15+ 默认禁用偏向锁)*。",
     "checklist": [
@@ -3340,6 +3370,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "保证多线程可见性（JMM 主内存与工作内存刷新）+ 禁止指令重排序（底层插入 Load/Store 内存屏障）；**不能**保证原子性，典型如 `count++` 分为读取、加一、写回三步复合操作，多线程下依旧存在写覆盖导致数据丢失。",
     "checklist": [
@@ -3359,6 +3390,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "屏蔽不同操作系统与硬件 CPU 缓存一致性协议的差异；抽象出“主内存（共享）”与“工作内存（私有本地缓存）”；Happens-Before（先行发生原则）是无需额外同步即可保证操作可见性与有序性的法定规则（程序次序规则、管程锁定规则、volatile 变量规则等）。",
     "checklist": [
@@ -3379,6 +3411,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "Compare-And-Swap（比较并交换，底层对应 CPU 的 `cmpxchg` 原子硬件指令）；三大缺陷：ABA 问题（通过带版本号戳记的 `AtomicStampedReference` 解决）、长时间自旋循环空耗 CPU 算力、只能保证单个共享变量的原子操作。",
     "checklist": [
@@ -3398,6 +3431,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "`volatile int state` 表示同步状态资源（0 为未锁，$\\ge 1$ 为已加锁/重入） + FIFO 双向虚拟链表 Node 队列存放排队阻塞线程 + CAS 原子修改 state 状态；是 `ReentrantLock`、`Semaphore`、`CountDownLatch` 等核心同步组件的底层灵魂基石。",
     "checklist": [
@@ -3417,6 +3451,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JDK API 层面显式锁 vs JVM 原生关键字隐式锁（自动释放）；`ReentrantLock` 具备三大高阶特性：支持响应中断（`lockInterruptibly`）、支持公平锁/非公平锁选型、结合 `Condition` 实现多条件精准唤醒。",
     "checklist": [
@@ -3436,6 +3471,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "每个 Thread 内部持有独立的 `ThreadLocalMap`（以 ThreadLocal 弱引用为 Key，强引用为 Value）；若线程池核心线程长期不销毁，GC 回收 ThreadLocal 后 Key 变为 null，但 Value 强引用依然挂在 Thread 上无法释放造成内存泄漏；**必须在使用完毕后显式调用 `remove()`**。",
     "checklist": [
@@ -3456,6 +3492,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "`CountDownLatch`（倒数计数门闩，一个或多个线程等其他人全部完成后再执行，不可重置）；`CyclicBarrier`（循环栅栏，多个线程互相等待凑齐一批再同时冲刺，可循环重用）；`Semaphore`（信号量发放许可证，常用于核心接口流量限流与资源并发控制）。",
     "checklist": [
@@ -3476,6 +3513,7 @@
     "category": "并发编程 JUC",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "死锁四大必要条件（互斥、占有且等待、不可剥夺、循环等待）；线上排查工具：`jstack <pid>` 打印线程堆栈查看“Found one Java-level deadlock”；预防核心手段：破坏循环等待条件，业务逻辑中强制所有涉及多资源的加锁必须按严格统一的全局顺序进行。",
     "checklist": [
@@ -3496,6 +3534,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**堆 + 元空间/方法区**（线程共享，存放对象实例与类元数据信息） vs **程序计数器 + 虚拟机栈 + 本地方法栈**（线程私有，生命周期与线程强绑定）；各个区域在高并发下的内存分配与潜在 OOM/StackOverflowError 风险。",
     "checklist": [
@@ -3515,6 +3554,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "每一次方法调用对应一个入栈与出栈的“栈帧”；栈帧内部四大核心组成：**局部变量表**（存放方法入参与局部变量）、**操作数栈**（执行字节码指令的计算工作区）、**动态链接**（运行时常量池符号引用转直接引用）、**方法返回地址**（正常或异常退出时的调用者现场恢复）。",
     "checklist": [
@@ -3534,6 +3574,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "JDK 7 永久代使用 JVM 堆内存（上限固定，极易触发 `OOM: PermGen space`） vs JDK 8+ 元空间移至本地操作系统物理内存；改用元空间彻底解决了类的元数据溢出瓶颈，降低了垃圾回收调优复杂度，并完成了 HotSpot 与 JRockit 虚拟机的技术融合。",
     "checklist": [
@@ -3553,6 +3594,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "引用计数法（无法解决对象互相循环引用致命缺陷） vs **可达性分析算法**（从 GC Roots 节点开始沿引用链向下搜索，无法触达即判定死亡）；核心 GC Roots 包含：虚拟机栈帧中引用的对象、方法区静态属性与常量引用的对象、本地方法栈 JNI 引用的对象。",
     "checklist": [
@@ -3572,6 +3614,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**强引用**（`Object obj = new Object()`，内存溢出也绝不回收） vs **软引用**（`SoftReference`，内存不足时才回收，适合做内存敏感型本地缓存） vs **弱引用**（`WeakReference`，只要 GC 发生立刻回收，典型应用于 `ThreadLocalMap` 的 Key） vs **虚引用**（`PhantomReference`，唯一作用是跟踪对象被垃圾回收的活动并配合引用队列释放堆外直接内存）。",
     "checklist": [
@@ -3590,6 +3633,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**标记-清除**（速度快，但产生大量不连续内存碎片，大对象无法分配时提前触发 Full GC）；**标记-复制**（无内存碎片，运行高效，但浪费一半内存空间，适用于存活率极低的新生代）；**标记-整理**（无碎片且充分利用空间，但移动对象与更新引用的成本极高，适用于存活率高的老年代）。",
     "checklist": [
@@ -3610,6 +3654,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "分代假说（绝大多数对象朝生夕灭，少数对象经多次回收存活）；堆内存划分为**新生代**（包含 1 个 Eden 区和 2 个 Survivor 区，默认比例 8:1:1，采用高效的标记-复制算法）与**老年代**（存放长期存活的大对象或老对象，采用标记-整理或标记-清除算法）。",
     "checklist": [
@@ -3629,6 +3674,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "三大晋升通道：1. **年龄阈值**（每熬过一次 Minor GC 增加 1 岁，默认达到 15 岁自动晋升，`-XX:MaxTenuringThreshold`）；2. **大对象直接进入**（避免新生代 Eden/Survivor 频繁发生大数组复制，`-XX:PretenureSizeThreshold`）；3. **动态对象年龄判定**（Survivor 空间中相同年龄所有对象大小总和大于 Survivor 一半时，$\\ge$ 该年龄的对象无需等待 15 岁直接晋升老年代）。",
     "checklist": [
@@ -3649,6 +3695,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "四大阶段：初始标记(STW) $\\rightarrow$ 并发标记 $\\rightarrow$ 重新标记(STW) $\\rightarrow$ 并发清除；三大致命缺陷：1. 并发阶段抢占 CPU 算力导致应用吞吐量下降；2. **浮动垃圾**（并发清除期间用户线程新产生的垃圾只能等下次 GC 清理）；3. 基于“标记-清除”产生大量内存空间碎片，当大对象无法分配时触发退化为 Serial Old 收集器并造成漫长极端的 Full GC STW。",
     "checklist": [
@@ -3670,6 +3717,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "彻底打破连续物理分代界限，将堆内存划分为数百至数千个等大的独立 **Region**；整体基于标记-整理、局部基于标记-复制，**彻底杜绝内存碎片**；建立可预测的停顿时间模型，优先回收垃圾价值最大的 Region（Garbage-First）；支持用户通过 `-XX:MaxGCPauseMillis` 设定目标期望 STW 时间（默认 200ms）。",
     "checklist": [
@@ -3691,6 +3739,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "Minor GC（新生代 GC，频繁且速度极快） vs Major GC（老年代 GC，仅 CMS 特有独立 Major GC） vs Full GC（整堆回收，涵盖年轻代、老年代和元空间，耗时极长需严控）；触发 Full GC 常见场景：老年代剩余空间不足、元空间容量不足、新生代晋升老年代时担保空间不足、代码中显式调用 `System.gc()`。",
     "checklist": [
@@ -3710,6 +3759,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "七大生命阶段：加载 $\\rightarrow$ 连接（验证、准备、解析） $\\rightarrow$ 初始化 $\\rightarrow$ 使用 $\\rightarrow$ 卸载；核心陷阱对比：**准备阶段**仅为类变量（static 变量）在方法区分配内存并赋系统默认的“数据零值”（如 `int` 为 0）；**初始化阶段**才会真正执行类构造器 `<clinit>()` 方法，执行程序员编写的赋值语句与静态代码块（如 `int a = 123` 中的 123）。",
     "checklist": [
@@ -3730,6 +3780,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "委派流程：类加载器收到请求时不自己加载，而是层层委托给父类加载器，只有父加载器在搜索范围找不到该类时子加载器才尝试自己加载；设计目的：**保护核心 Java API 的安全性与单例性**（防止自定义 `java.lang.Object` 篡改核心库）；打破手段：自定义类加载器并重写 `loadClass()` 逻辑（经典工程场景：Tomcat 隔离不同 Web 容器的同名类、SPI 机制使用线程上下文加载器、OSGi 模块化热替换）。",
     "checklist": [
@@ -3750,6 +3801,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**堆内存分配**：`-Xms` 与 `-Xmx`（初始堆与最大堆，**生产环境必须配相同大小以避免内存震荡与频繁 Full GC**）；`-Xmn`（新生代大小）；`-XX:MetaspaceSize` 与 `-XX:MaxMetaspaceSize`；**垃圾回收配置**：`-XX:+UseG1GC`、`-XX:MaxGCPauseMillis`；**故障排查必备神参数**：`-XX:+HeapDumpOnOutOfMemoryError` 与 `-XX:HeapDumpPath=/data/logs/heap.hprof`（OOM 自动生成内存快照）。",
     "checklist": [
@@ -3772,6 +3824,7 @@
     "category": "JVM 底层原理",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "",
     "checklist": [],
@@ -3788,6 +3841,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "事务支持（InnoDB 支持 ACID，MyISAM 不支持）；锁粒度（MyISAM 只支持表锁，InnoDB 支持行级锁与间隙锁，高并发性能碾压）；灾后恢复（InnoDB 依赖 Redo Log 实现 crash-safe）；外键与 MVCC（InnoDB 独有支持）；因此 OLTP 业务无脑选 InnoDB。",
     "checklist": [
@@ -3810,6 +3864,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "客户端通过连接器（鉴权与长连接管理） $\\rightarrow$ 查询缓存（MySQL 8.0 彻底废除） $\\rightarrow$ 分析器（词法分析、语法树构建与表字段合法性校验） $\\rightarrow$ **优化器（成本评估、选择最优索引、生成执行计划）** $\\rightarrow$ 执行器（判断表权限、调用存储引擎 API 逐行读取数据至 Server 层并返回）。",
     "checklist": [
@@ -3828,6 +3883,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "执行器先读行记录至内存 Buffer Pool $\\rightarrow$ 修改内存页 $\\rightarrow$ 引擎写 Redo Log 并处于 **Prepare 状态** $\\rightarrow$ 执行器写 Binlog $\\rightarrow$ 引擎完成 Redo Log 的 **Commit 状态**；**两阶段提交核心目的**：保证 Redo Log 与 Binlog 在物理崩溃恢复与主从复制时的数据逻辑强一致性，防止“日志写了一半宕机导致主从不同步”。",
     "checklist": [
@@ -3847,6 +3903,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "Hash 索引仅支持等值查询，不支持范围与排序；二叉/红黑树树高过大，磁盘 I/O 次数过多；B 树所有节点都存整行数据，导致单个页能存的索引键极少，树过高；**B+ 树非叶子节点只存索引 Key（单页扇出极大，千万级数据仅需 3~4 层，最多 3~4 次磁盘 I/O），且所有叶子节点在同一层并用双向链表相连，极其契合范围扫描与倒序排序**。",
     "checklist": [
@@ -3868,6 +3925,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**聚簇索引**：B+ 树叶子节点直接存放**整行完整的物理行数据**（一张表有且仅能有一个，默认主键建立）；**非聚簇索引（二级索引）**：叶子节点存放的是**当前索引列的键值 + 该行对应的主键 ID**（查询非索引字段时需要通过主键二次寻址）。",
     "checklist": [
@@ -3887,6 +3945,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**回表**：在二级索引树上查到主键 ID 后，再拿着主键 ID 回到聚簇索引树上查找整行完整数据的额外寻址过程；**覆盖索引**：SQL 语句中 `SELECT` 的所有字段恰好被当前二级索引或联合索引完全覆盖（如 `SELECT id, name FROM user WHERE name = 'abc'`），直接在二级索引叶子节点拿到结果返回，**无需回表，大幅减少磁盘 I/O**。",
     "checklist": [
@@ -3906,6 +3965,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "联合索引 `(a, b, c)` 底层先按 a 排序，a 相同按 b 排序，b 相同按 c 排序；查询必须从最左列 a 开始连续匹配，若跳过中间列则后续列索引失效；**范围查询影响**：联合索引中一旦某列使用了范围比较（如 `WHERE a = 1 AND b > 10 AND c = 2`），则其右侧的列（c 列）彻底无法走索引树精准检索，只能退化为条件过滤。",
     "checklist": [
@@ -3926,6 +3986,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "MySQL 5.6+ 针对联合索引的核心优化；未开启时，引擎只按最左前缀索引读出主键，全部回表后交由 Server 层逐行过滤；**开启 ICP 后**，存储引擎层在遍历二级索引的同时，**直接过滤掉不满足后续索引字段条件的记录**，只有完全匹配的记录才进行回表，极大减少了回表次数和磁盘 I/O。",
     "checklist": [
@@ -3946,6 +4007,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**“模、型、数、空、运、最、快”七字口诀**：1. **模**：左模糊查询 `LIKE '%abc'`；2. **型**：数据类型隐式转换（如字符串字段传了数字）；3. **数**：在索引列上使用函数操作（如 `DATE(create_time)`）；4. **空**：`IS NULL` / `IS NOT NULL` 使用不当（取决于数据基数）；5. **运**：在索引列上做数学运算（如 `id + 1 = 10`）；6. **最**：破坏最左前缀原则；7. **快**：优化器评估全表扫描成本比走索引更快。",
     "checklist": [
@@ -3970,6 +4032,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "",
     "checklist": [],
@@ -3986,6 +4049,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "按严重性从高到低：",
     "checklist": [
@@ -4004,6 +4068,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "四大隔离级别递进：**读未提交（Read Uncommitted，无法防脏读）** $\\rightarrow$ **读已提交（Read Committed，解决脏读）** $\\rightarrow$ **可重复读（Repeatable Read，InnoDB 默认，解决脏读与不可重复读，并通过 MVCC + 间隙锁基本解决幻读）** $\\rightarrow$ **串行化（Serializable，全表或区间加锁串行执行，杜绝所有并发问题但性能最差）**。",
     "checklist": [
@@ -4022,6 +4087,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "三大基石：1. **聚簇索引隐藏字段**（`trx_id` 记录修改事务 ID，`roll_pointer` 配合 Undo 构成指针链）；2. **Undo Log 版本链**（旧版本数据由回滚指针串成线性链表）；3. **ReadView 一致性视图**（包含活跃未提交事务列表 `m_ids`、最小未提交事务 `min_trx_id`、最大已分配事务 `max_trx_id`、创建者 `creator_trx_id`），根据版本 trx_id 落在 ReadView 区间判定可见性。",
     "checklist": [
@@ -4042,6 +4108,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**RC（读已提交）**：事务内**每一次执行普通快照读 SELECT 时，都会重新生成一个崭新的 ReadView**（因此若外部事务已提交，新 ReadView 能读到新数据，导致不可重复读）；**RR（可重复读）**：**仅在事务第一次执行快照读时生成一个 ReadView**，后续所有 SELECT 强制复用这个最初的 ReadView，彻底免疫其他事务并发提交的影响（实现可重复读）。",
     "checklist": [
@@ -4061,6 +4128,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**快照读（Snapshot Read）**：普通的 `SELECT ...` 查询，不加锁，纯走 MVCC 读取符合可见性规则的历史版本快照，无锁高并发；**当前读（Current Read）**：读取数据的最新已提交版本并强制加锁，包括 `SELECT ... FOR UPDATE`（排他锁）、`SELECT ... LOCK IN SHARE MODE`（共享锁）以及所有的 DML 写语句 `INSERT/UPDATE/DELETE`。",
     "checklist": [
@@ -4080,6 +4148,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "意向锁是 **InnoDB 自动加的表级锁**（意向共享锁 IS、意向排他锁 IX）；**核心设计价值**：当某个事务想要给整张表加表锁（如 `LOCK TABLES ... WRITE`）时，**无需逐行扫描几百万行去检查是否有人持有了行锁**，只需看表头是否有 IX/IS 即可瞬间判定互斥，极大提升了锁冲突检测效率。",
     "checklist": [
@@ -4099,6 +4168,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**记录锁（Record Lock）**：精准锁住某一条客观存在的索引记录；**间隙锁（Gap Lock）**：锁住两个索引记录之间的开区间 `(a, b)`（不包含两端记录本身），**唯一使命是防止其他事务在间隙中 INSERT 产生幻读**；**临键锁（Next-Key Lock）**：记录锁 + 间隙锁的组合，锁定左开右闭区间 `(a, b]`，是 InnoDB 在 RR 级别下执行当前读时的默认加锁单位。",
     "checklist": [
@@ -4119,6 +4189,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**Redo Log**（InnoDB 独有、物理偏页修改记录、固定大小循环覆盖写、实现崩溃恢复 crash-safe）；**Undo Log**（InnoDB 独有、逻辑反向 SQL 记录、支持事务原子回滚与 MVCC 版本链构建）；**Binlog**（MySQL Server 层通用、逻辑 SQL 增量追加写、全量归档、做主从复制与灾备恢复）。",
     "checklist": [
@@ -4139,6 +4210,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "排查三板斧：开启慢查询日志抓 SQL $\\rightarrow$ `EXPLAIN` 分析执行计划 $\\rightarrow$ 结合业务分析索引与表结构。**EXPLAIN 重点四大金刚**：1. `type`：连接访问类型（争取 `const/eq_ref/ref/range`，绝对严禁 `ALL` 全表扫描）；2. `possible_keys` 与 `key`：预测索引与实际命中索引；3. `rows`：预估扫描行数（越少越好）；4. `Extra`：警惕 `Using filesort` 与 `Using temporary`，争取 `Using index`。",
     "checklist": [
@@ -4160,6 +4232,7 @@
     "category": "MySQL 数据库",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**变慢根源**：MySQL 执行器需要先扫描前 1000010 条记录并逐行进行昂贵的回表磁盘 I/O，最后将前 100 万条记录白白丢弃，仅取最后 10 条；**优化两大神招**：1. **子查询延迟关联**：`SELECT * FROM t JOIN (SELECT id FROM t ORDER BY create_time LIMIT 1000000, 10) a ON t.id = a.id`，利用覆盖索引只在二级索引树极速扫描 ID，最后只对这 10 条做回表；2. **游标记录法（自增主键）**：若主键连续自增，改写为 `WHERE id > 1000000 LIMIT 10`，直接走索引范围查找跳过前百万数据。",
     "checklist": [
@@ -4180,6 +4253,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**String**（通用数据缓存、数值计数器、单机分布式锁）；**Hash**（存储对象多属性字段、购物车列表）；**List**（基于 lpush/rpop 实现简易消息队列、最新按序动态列表）；**Set**（无序去重集合、抽奖活动、共同关注好友好友并集交集）；**ZSet**（带分值 score 有序集合、实时热度排行榜、延迟任务队列）。",
     "checklist": [
@@ -4202,6 +4276,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "数据量与元素较少时采用紧凑型列表（ziplist / listpack）；元素增多时升级为**跳表（SkipList）+ 哈希表（Dict）**；跳表原理：在单向有序链表基础上建立**多层稀疏索引链表**，查找时自顶向下逐层二分跳跃，用空间换时间实现平均 $O(\\log N)$ 的高效范围与等值查询。",
     "checklist": [
@@ -4222,6 +4297,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "四大支柱：1. **纯内存高速操作**（纳秒级读写响应）；2. **I/O 多路复用模型**（基于 Linux epoll，单线程高效轮询处理成千上万并发网络连接）；3. **极致高效的底层数据结构**（SDS 简单动态字符串、跳表、压缩列表等）；4. **核心命令单线程执行**（完全避免了多线程频繁上下文切换、CPU 调度开销以及多线程锁竞争）。",
     "checklist": [
@@ -4243,6 +4319,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "瓶颈洞察：Redis 性能天花板往往不在内存计算而在网络 I/O 读写带宽；**多线程职责边界**：多线程**仅仅负责网络 Socket 数据的读取解析以及应答结果的写回**；**数据读写命令的核心执行流程依然由单线程串行处理**；因此**在业务和数据操作层面，完全不存在任何并发安全和数据竞争隐患**。",
     "checklist": [
@@ -4264,6 +4341,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**RDB**（定时全量二进制快照，`bgsave` 通过 `fork` 子进程写时复制 COW，文件极小、灾备恢复极快，但两次快照间宕机会丢失几分钟数据）；**AOF**（追加写入操作命令日志，数据安全性极高，但文件体积庞大、故障恢复重放速度极慢）；**生产终极选型**：开启 **RDB + AOF 混合持久化**（RDB 做全量底包 + AOF 记录实时增量）。",
     "checklist": [
@@ -4284,6 +4362,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**重写原理**：主进程后台 `fork` 出子进程读取当前内存中最新键值快照，逆向生成全新紧凑的重写 AOF（多条累计命令合并为一条）；重写期间新写入的增量命令同时放入“AOF 重写缓冲区”；重写完成后向主线程发信号原子替换旧文件；**阻塞性**：**仅在 `fork` 子进程瞬间主线程存在极短暂阻塞，后续整个 AOF 重写过程完全非阻塞**。",
     "checklist": [
@@ -4305,6 +4384,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**定义**：恶意或误操作查询**数据库和缓存中均不存在的数据**（如 `id = -1`），导致所有请求直接穿透缓存砸崩底层 DB；**两大工业级解法**：1. **缓存空对象（带短 TTL）**：数据库查无数据时在 Redis 存入空值（设置 1~5 分钟短过期时间）；2. **前置布隆过滤器（Bloom Filter）**：在访问缓存前用布隆过滤器拦截，判定一定不存在的数据直接在网关/接口层拒绝。",
     "checklist": [
@@ -4325,6 +4405,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**定义**：某一个**访问量巨大的超级热点 Key（如秒杀爆品）突然过期失效**的瞬间，海量高并发请求同时穿透至数据库尝试重建缓存，直接打垮 DB；**两大工业级解法**：1. **分布式互斥锁**：查缓存未命中时仅允许拿到互斥锁的一个线程去查库重建，其余线程自旋等待重试；2. **物理永不过期 + 逻辑过期**：热点 Key 在 Redis 物理不设 TTL，但在 Value 内部封装过期时间戳，后台起异步线程定时巡检续期。",
     "checklist": [
@@ -4345,6 +4426,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**定义**：**大量缓存 Key 集中在同一短时间内集体过期**，或者 **Redis 缓存节点直接宕机不可用**，导致全网巨量并发流量同时涌向数据库引发雪崩瘫痪；**三大预防杀手锏**：1. **过期时间随机打散（加盐）**：设置 TTL 时在固定基数上增加 1~5 分钟的随机偏移扰动；2. **高可用集群架构**：部署 Redis 哨兵集群或 Cluster 分布式集群，避免单点故障；3. **服务熔断与限流降级**：结合 Sentinel 保护数据库底线。",
     "checklist": [
@@ -4366,6 +4448,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "行业通用首选 **Cache-Aside 模式（先更新数据库，再删除缓存）**；高并发下若读写并发偶发不一致，可通过“延迟双删”降低脏数据窗口；**终极强一致/最终一致性工业方案**：只更新 MySQL 数据库，通过 **Canal 中间件伪装成从库监听 MySQL 的 Binlog 变更日志**，通过 RocketMQ/Kafka 异步消费并重试删除对应 Redis 缓存，保证最终一致性。",
     "checklist": [
@@ -4386,6 +4469,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "三大必备铁律：1. **原子加锁与防死锁**：必须使用 `SET lock_key random_value NX PX 30000` 单条原子指令（具备互斥性与租期）；2. **防误删他人锁**：释放锁时必须使用 **Lua 脚本执行“比对随机值 + 删除”**（防止自身业务耗时过长锁超时后，错误删除了别人刚刚持有的新锁）；3. **锁超时自动续期**：使用 Redisson 框架的**看门狗（Watchdog）机制**，后台异步定时给未完成的业务任务自动延长锁有效时长。",
     "checklist": [
@@ -4406,6 +4490,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**惰性删除（被动）**：客户端访问某个 Key 时才检测其是否过期，已过期则立即物理删除并返回空（CPU 友好，但大量冷数据长期不访问会空耗内存空间）；**定期删除（主动）**：Redis 默认每隔 100ms 随机抽取部分配置了 TTL 的 Key 进行过期检测并清理；**两者结合**在 CPU 算力与内存空间利用率之间实现完美动态平衡。",
     "checklist": [
@@ -4426,6 +4511,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "当实际占用内存超过 `maxmemory` 上限时触发内存淘汰（Eviction）；核心策略：`noeviction`（默认策略，不淘汰数据，写操作直接报错抛 OOM 异常）；`volatile-lru / volatile-lfu`（仅从设置了过期时间的 Key 中淘汰最近最少使用 / 最不经常访问的）；**`allkeys-lru / allkeys-lfu`（全库所有 Key 范围内淘汰，生产最推荐的通用配置）**。",
     "checklist": [
@@ -4447,6 +4533,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "用于主从架构的自动高可用容灾；三大核心职责：1. **集群监控**：持续检测 Master 和 Slave 节点的存活状态；2. **主观下线与客观下线判定**：单个哨兵判定心跳超时为“主观下线”，多数哨兵通过 Quorum 仲裁投票一致通过判定为“客观下线”；3. **自动故障转移（Failover）**：选出领头哨兵在 Slave 中选举新 Master，让其余从节点指向新主，并发布事件通知客户端。",
     "checklist": [
@@ -4468,6 +4555,7 @@
     "category": "Redis 缓存",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**虚拟哈希槽（Hash Slot）机制**；整个 Cluster 逻辑上固定划分为 **16384** 个哈希槽，所有物理主节点均匀分配一部分槽位；客户端寻址算法：`CRC16(key) % 16384` 计算所属槽位；若请求发至错误节点，节点返回 `MOVED <slot> <ip:port>` 引导客户端重定向寻址；支持 `{hashtag}` 机制将特定关联 Key 强制哈希映射到同一节点。",
     "checklist": [
@@ -4490,6 +4578,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**控制反转（IOC）**：将对象创建、配置与生命周期管理全权移交给 Spring IoC 容器；**依赖注入（DI）**：容器在运行期动态将依赖对象注入到组件中；核心解决**组件间强依赖耦合度高、维护演进成本大、单元测试 Mock 极其困难**等工程痛点。",
     "checklist": [
@@ -4510,6 +4599,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "面向切面编程，将日志记录、事务控制、安全鉴权等横切通用逻辑抽离复用；**JDK 动态代理**：要求目标类**必须实现至少一个接口**，基于 Java 原生反射机制在内存中动态生成接口实现类；**CGLIB 代理**：基于 ASM 字节码技术在内存中动态生成目标类的**子类**（因此目标类不能是 `final`，目标方法也不能是 `final` 或 `private`）。",
     "checklist": [
@@ -4530,6 +4620,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "七大关键步骤：1. **实例化**（推断构造方法并通过反射 `new` 出空对象）；2. **属性赋值**（依赖注入 `@Autowired`）；3. **Aware 回调**（注入 BeanName、BeanFactory 等容器能力）；4. **BeanPostProcessor 前置处理**（执行 `postProcessBeforeInitialization`）；5. **初始化阶段**（执行 `@PostConstruct`、`InitializingBean` 接口方法及自定义 `init-method`）；6. **BeanPostProcessor 后置处理**（**AOP 动态代理正是在此步骤生成！**）；7. **投入使用/单例池**与**销毁**（`DisposableBean`）。",
     "checklist": [
@@ -4554,6 +4645,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**不是**；Spring 框架默认不会对单例作用域 Bean 内部的成员变量进行任何线程同步或并发加锁；**工业最佳实践**：1. 尽量将 Controller 和 Service 设计为**无状态 Bean**（不要定义用来暂存业务数据的可变成员变量）；2. 若必须存储线程私有状态，使用 `ThreadLocal` 做线程数据隔离，或在方法内部使用局部变量。",
     "checklist": [
@@ -4575,6 +4667,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "三大缓存划分：一级缓存 `singletonObjects`（完全体成熟单例）、二级缓存 `earlySingletonObjects`（半成品早熟单例）、三级缓存 `singletonFactories`（存放用于创建早期引用的 `ObjectFactory` 函数式接口）；**为什么二级不够**：如果只有二级缓存，普通 Bean 的循环依赖完全能够解决，**但无法解决“带 AOP 代理的 Bean”**；三级缓存的唯一核心使命，就是**保证整个 Spring 容器生命周期中，AOP 代理对象只被按需延迟创建一次，绝不提前暴露未完成的代理**。",
     "checklist": [
@@ -4595,6 +4688,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "四大踩坑黑洞：1. 修饰的方法**不是 `public`**（AOP 代理无法切入生效）；2. **同类内部 `this.method()` 自调用**（直接走 this 对象内存调用，绕过了 Spring AOP 代理增强切面）；3. 业务代码中用 `try-catch` 将异常手动吞掉未重新抛出（导致 Spring 事务拦截器捕获不到异常触发回滚）；4. 抛出了受检异常（Checked Exception），但未显式配置 `@Transactional(rollbackFor = Exception.class)`。",
     "checklist": [
@@ -4616,6 +4710,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**`@Autowired`**：Spring 原生专有注解，**默认优先按类型（byType）**进行自动装配，若同类型存在多个 Bean 则退化为按属性名（byName）匹配，可配合 `@Qualifier` 显式指定 Bean 名称；**`@Resource`**：JDK 自带标准规范（JSR-250），**默认优先按名称（byName）**进行精准装配，若未指定 name 属性且按名找不到时才按类型回退匹配。",
     "checklist": [
@@ -4635,6 +4730,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "`@SpringBootApplication` 复合注解核心包含 `@EnableAutoConfiguration`；底层通过 `AutoConfigurationImportSelector` 扫描类路径下所有 jar 包的 `META-INF/spring.factories`（Spring Boot 3.0+ 迁移至 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`）；配合 `@ConditionalOnClass`、`@ConditionalOnMissingBean` 等条件注解动态判定当前环境依赖，按需向 IOC 容器注册全套配置类。",
     "checklist": [
@@ -4655,6 +4751,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "标准处理流水线：客户端请求 $\\rightarrow$ **DispatcherServlet**（前端控制器统领全局） $\\rightarrow$ 请求 **HandlerMapping**（处理器映射器根据 URL 寻址到具体 Controller） $\\rightarrow$ 调用 **HandlerAdapter**（处理器适配器反射执行具体业务方法） $\\rightarrow$ 执行 Controller 返回数据 $\\rightarrow$ 若使用 `@ResponseBody` 则由 **HttpMessageConverter** 将 Java 对象序列化为 JSON 字符串写入 Response 响应体。",
     "checklist": [
@@ -4673,6 +4770,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**`PROPAGATION_REQUIRED`**（默认配置）：若当前存在外部事务则直接加入该事务共进退，若不存在外部事务则开启全新事务执行；**`PROPAGATION_REQUIRES_NEW`**：无论外部是否存在事务，强制将外部事务挂起，自己开启一个全新的独立物理事务单独提交与回滚（经典实战场景：用户下单失败回滚，但操作日志或审计流水必须通过 REQUIRES_NEW 独立成功落库）。",
     "checklist": [
@@ -4692,6 +4790,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**`#{}`（预编译处理）**：MyBatis 在解析时会将其转换为 JDBC 的 `?` 占位符（PreparedStatement），参数传入时由数据库驱动统一加安全引号并转义特殊字符，**从根本上彻底杜绝 SQL 注入**；**`${}`（直接字符串替换）**：MyBatis 在静态 SQL 解析阶段直接将传入的字符串原生拼接到 SQL 语句中（Statement），若传入 `' OR '1'='1` 等恶意字符串会直接改变 SQL 逻辑语义，造成严重 SQL 注入漏洞。",
     "checklist": [
@@ -4711,6 +4810,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**一级缓存（本地缓存）**：基于 `SqlSession` 级别，默认开启且无法关闭，在同一个会话内相同查询直接走缓存；**二级缓存（全局缓存）**：基于 `Mapper` 命名空间级别，跨 SqlSession 共享；**生产关闭二级缓存的核心原因**：在分布式或多服务集群环境下，二级缓存仅存在于单节点本地内存中，其他节点修改数据库无法通知当前节点失效，**极易读取到陈旧脏数据导致业务严重错误，生产统一推荐使用 Redis 做集中式缓存**。",
     "checklist": [
@@ -4731,6 +4831,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**定义**：本质是一个**依赖传递清单描述文件 + 自动配置模块**；通过将某一技术栈所必须的全部 jar 包和版本进行标准化封装绑定（如 `spring-boot-starter-web`）；**核心好处**：践行“约定优于配置（Convention over Configuration）”，开发者只需在 pom.xml 声明一行 starter 依赖，即可一键开箱即用，彻底免除手动排查依赖冲突与繁重 XML 标签配置之苦。",
     "checklist": [
@@ -4751,6 +4852,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "基于经典**观察者设计模式**；三要素：自定义事件 `ApplicationEvent`、事件发布器 `ApplicationEventPublisher.publishEvent()`、事件监听器 `@EventListener`（结合 `@Async` 实现跨线程非阻塞异步执行）；**工程价值**：实现核心业务流与次要附属流的解耦（如二手交易平台用户注册成功后，通过发布事件异步并行发送欢迎邮件、生成优惠券，不拖慢注册主流程响应耗时）。",
     "checklist": [
@@ -4771,6 +4873,7 @@
     "category": "Spring 生态与 ORM 框架",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "两大铁律：1. **必须显式设置“连接超时（Connect Timeout）”与“读取超时（Read Timeout）”**（防止下游服务卡死导致本服务线程池被耗尽发生雪崩）；2. **重试机制必须建立在下游接口具备“幂等性”的绝对前提下**，只对只读幂等接口开启超时重试，任何涉及插入扣款等非幂等写接口严禁盲目自动重试。",
     "checklist": [
@@ -4790,6 +4893,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**三次握手**：客户端发 SYN $\\rightarrow$ 服务端回 SYN+ACK $\\rightarrow$ 客户端回 ACK；核心是**双向验证客户端与服务端的发送与接收能力均正常，并同步初始序列号（ISN）**；**四次挥手**：客户端发 FIN $\\rightarrow$ 服务端回 ACK $\\rightarrow$ 服务端准备就绪发 FIN $\\rightarrow$ 客户端回 ACK；**为什么挥手要四次**：因为被断开方收到 FIN 时可能还有缓冲区数据未发完，**ACK（确认已知你想关）和自身发送 FIN（我也确认关）必须分两步进行，不能像握手一样合并发送**。",
     "checklist": [
@@ -4811,6 +4915,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "主动发起关闭方在最后发送 ACK 后进入 `TIME_WAIT`，强制等待 2MSL（报文最大生命周期）；**两大核心使命**：1. **确保最后一个发出的 ACK 能够顺利到达被动方**（若对方未收到发来重传 FIN，主动方在 2MSL 内可重新回 ACK）；2. **让本次连接中产生的所有网络延迟迷走报文在网络中彻底消亡**，防止新老连接复用相同五元组时接收到旧连接的脏数据干扰。",
     "checklist": [
@@ -4831,6 +4936,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**本质差异**：TCP 面向连接、提供可靠双向字节流、具备拥塞与流量控制机制；UDP 无连接、尽最大努力交付、无状态开销极小且速度飞快（常用于音视频通话与实时竞技游戏）；**TCP 可靠传输五大支柱**：1. **校验和**（检测数据包损坏）；2. **序列号与确认应答（ACK）**；3. **超时重传与快速重传**；4. **滑动窗口流量控制**（防接收方缓冲区溢出）；5. **拥塞控制（慢启动、拥塞避免、快重传、快恢复）**。",
     "checklist": [
@@ -4855,6 +4961,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "全链路九大阶段：1. 浏览器 DNS 域名解析（浏览器缓存 $\\rightarrow$ 系统 hosts $\\rightarrow$ 本地 DNS $\\rightarrow$ 根域名服务器递归查询获得 IP）；2. 建立 TCP 三次握手；3. TLS 安全协商握手（HTTPS 混合加密建立）；4. 发送 HTTP 请求报文；5. 经过 Nginx 反向代理与负载均衡分发至后端网关；6. Spring Boot 微服务执行业务逻辑并查库返回 JSON；7. 客户端接收 HTTP 响应；8. 浏览器内核解析 HTML/CSS/JS 构建 DOM 树并渲染呈现；9. 四次挥手释放连接。",
     "checklist": [
@@ -4881,6 +4988,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**区别**：HTTP 采用明文传输（存在窃听、篡改与冒充三大风险），默认 80 端口；HTTPS 默认 443 端口，在传输层与应用层之间引入了 SSL/TLS 安全协议加密层；**混合加密握手流程**：在连接初期先利用**非对称加密（公钥/私钥体系结合 CA 数字证书认证）**安全协商出临时的会话密钥；在建立连接后的真实数据通信阶段，全面改用计算性能高数百倍的**对称加密（如 AES）**进行数据高速传输。",
     "checklist": [
@@ -4902,6 +5010,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**RFC 语义规范**：GET 设计为安全的、幂等的只读数据获取操作，参数直接拼接在 URL Querystring 中，有长度限制且易被浏览器安全缓存；POST 设计为非幂等的向服务器提交数据或修改资源状态的操作，参数封装在请求体（RequestBody）中，无长度限制且不会被浏览器自动缓存；**幂等性定义**：多次执行相同的 GET 请求对服务器资源产生的状态影响是一致且无副作用的，而多次执行 POST 会在数据库中重复创建多条记录。",
     "checklist": [
@@ -4922,6 +5031,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**Cookie**：保存在客户端浏览器的小型文本，每次 HTTP 请求自动携带；**Session**：保存在服务端内存中的会话对象（强依赖单机内存，微服务集群部署必须借助 Redis 维护共享 Session）；**JWT（JSON Web Token）**：由 Header、Payload、Signature 三部分组成，服务端通过私钥数字签名生成 Token 返回给前端；后续请求前端在 Header 携带 Token，**服务端只需使用公钥验签即可确认用户身份，服务器端无需存储任何 Session 状态，天然契合分布式高并发架构**。",
     "checklist": [
@@ -4943,6 +5053,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**产生根源**：现代浏览器的**同源策略安全限制**（只要请求的协议 Protocol、主机 Domain、端口 Port 有任意一项不相同即判定为跨域，浏览器拦截响应结果）；**两大主流解法**：1. **后端 CORS 响应头配置**：在 Controller 加 `@CrossOrigin` 或通过 Spring WebFilter 设置 `Access-Control-Allow-Origin: *` 允许安全跨域；2. **Nginx 反向代理转发**：前后端统一通过同域名同端口的 Nginx 代理，将前端静态请求与后端 API 请求分流，绕开浏览器的同源安全检测。",
     "checklist": [
@@ -4963,6 +5074,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**3xx 重定向**：301（Moved Permanently 永久重定向，搜索引擎更新索引）、302（Found 临时重定向）；**4xx 客户端错误**：401（Unauthorized 未登录认证/Token无效）、403（Forbidden 登录成功但无访问权限）、404（资源不存在）；**5xx 服务端错误**：500（Internal Server Error 后端业务抛异常崩溃）、502（Bad Gateway 网关找不到上游微服务节点）、504（Gateway Timeout 网关等待上游服务响应超时）。",
     "checklist": [
@@ -4983,6 +5095,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**HTTP 1.0 $\\rightarrow$ 1.1**：默认开启持久连接（Connection: keep-alive），支持管道化 Pipeline 技术与断点续传（Range 请求头）；**HTTP 1.1 $\\rightarrow$ 2.0 革命性演进**：1. **二进制分帧**（将纯文本行格式彻底替换为二进制帧传输）；2. **多路复用（Multiplexing）**（单个 TCP 连接上并发双向交织传输多个请求与响应，**彻底根除了应用层队头阻塞 Head-of-Line Blocking**）；3. **头部压缩（HPACK 算法）**；4. **服务端主动推送（Server Push）**。",
     "checklist": [
@@ -5005,6 +5118,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**CPU 诊断**：`top` 查看整体系统负载与 `%CPU`，`top -Hp <pid>` 定位高负载线程；**内存诊断**：`free -h` 查看物理内存与 Swap 余量，`vmstat 1` 查看内存页面换入换出；**磁盘诊断**：`df -h` 排查磁盘根分区是否被日志撑爆，`du -sh *` 快速定位具体超大日志目录；**网络诊断**：`netstat -tuln` 查看本地端口监听，`lsof -i:8080` 查端口占用；**日志排障**：`tail -100f app.log` 动态跟踪日志输出，结合 `grep \"Exception\" -C 5` 抓取异常上下文。",
     "checklist": [
@@ -5027,6 +5141,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**本质关系**：**镜像**是静态的只读模板（基于 UnionFS 联合文件系统分层堆叠构建）；**容器**是镜像运行时的动态实例（在最底层只读镜像层之上挂载一个可读写的容器顶层，采用写时复制 CoW 机制）；**底层三大内核基石**：1. **Namespaces**（提供进程、网络、挂载点等 6 大维度的资源视图隔离）；2. **Control Groups（Cgroups）**（硬性限制并监控容器使用的 CPU、内存等物理配额）；3. **UnionFS**（分层复用与轻量级存储）。",
     "checklist": [
@@ -5049,6 +5164,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "四大优化准则：1. **使用轻量级精简基础镜像**（如 `openjdk:17-alpine` 或 distroless，体积从上千兆暴降至几十兆）；2. **减少镜像分层（合并指令）**：将多个连续的 `RUN` 命令用 `&& \\` 合并为一行，并在同一层中清理缓存和安装包；3. **合理利用缓存层顺序**：将变动最不频繁的依赖包放在前面，经常变动的代码包放在后面；4. **多阶段构建（Multi-Stage Builds）**：在第一阶段使用包含完整构建环境的镜像进行编译打包，在第二阶段只提取编译产物 Jar 放入最小化运行镜像，镜像体积减少 80% 以上。",
     "checklist": [
@@ -5070,6 +5186,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**`git merge`**：分支合并时自动生成一个全新的三方合并 Commit 节点，忠实完整地保留各个分支的真实时间线和分叉交织轨迹；**`git rebase`（变基）**：将当前分支从分叉以来的所有提交逐个“剪切并重放”在目标分支的最顶端，**消除所有交叉分叉，生成一条纯净、完全平坦线性的整洁提交历史**；**团队协作铁律**：个人本地特性分支合入远程分支前可用 rebase 保持线性；**公共主干分支（如 master/develop）绝对严禁执行 rebase**，否则会强行篡改已推送的 Commit Hash 引发严重代码冲突灾难。",
     "checklist": [
@@ -5091,6 +5208,7 @@
     "category": "计算机网络 + 鉴权与运维工具",
     "is_core": true,
     "skeleton": "",
+    "pre_knowledge": "",
     "spoken_answer": "",
     "core_points": "**核心概念**：**CI（持续集成）**代码频繁自动合并与自动化测试；**CD（持续交付/部署）**自动化安全上线发布；**全自动工业级发布流水线七步曲**：1. 开发者将代码 Push 到 GitLab/GitHub 远程分支；2. 触发 Webhook 自动通知 Jenkins 或 GitHub Actions 启动 Pipeline 构建任务；3. 自动化拉取代码并执行单元测试与代码质量门禁扫描（SonarQube）；4. Maven 执行 `clean package` 编译打包输出可执行 Jar 包；5. 调用 Docker 构建生产轻量镜像，并将其打上构建版本号 Tag 推送至私有 HarBor 镜像仓库；6. 通知 Kubernetes（K8s）集群拉取最新镜像执行滚动无缝更新（Rolling Update）；7. 自动化健康检查探针验证存活状态，若失败自动执行无感知回滚。",
     "checklist": [
@@ -8232,6 +8350,19 @@
       renderCurrentQuestion();
     }
 
+    function renderPreKnowledge(q) {
+      const preCard = document.getElementById('preKnowledgeCard');
+      const preContent = document.getElementById('preKnowledgeContent');
+      preCard.removeAttribute('open');
+      if (q.spoken_answer && q.pre_knowledge) {
+        preContent.innerHTML = renderMarkdown(q.pre_knowledge.replace(/^([ \t]*)\* /gm, '$1- '));
+        preCard.style.display = 'block';
+      } else {
+        preCard.style.display = 'none';
+        preContent.innerHTML = '';
+      }
+    }
+
     function renderCurrentQuestion() {
       const q = filteredQuestions[currentIndex];
       if (!q) return;
@@ -8247,6 +8378,7 @@
       updateQuestionSheetActive();
 
       // Check if this question has a polished spoken answer
+      renderPreKnowledge(q);
       const hasSpoken = Boolean(q.spoken_answer);
       const polishedBlock = document.getElementById('polishedReviewBlock');
       const draftBlock = document.getElementById('draftReviewBlock');
@@ -9069,6 +9201,7 @@
       updateExamDots();
 
       // Render masked answer
+      renderPreKnowledge(q);
       const hasSpoken = Boolean(q.spoken_answer);
       const polishedBlock = document.getElementById('polishedReviewBlock');
       const draftBlock = document.getElementById('draftReviewBlock');
