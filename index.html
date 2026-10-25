@@ -8977,6 +8977,7 @@
     function switchAppMode(mode, triggerRender = true) {
       appMode = mode;
       localStorage.setItem('phone_mock_app_mode', mode);
+      clearInterval(timer);
 
       const btnStudy = document.getElementById('btnModeStudy');
       const btnExam = document.getElementById('btnModeExam');
@@ -9005,7 +9006,7 @@
           window.speechSynthesis.cancel();
           if (filteredQuestions.length > 0) {
             if (currentIndex < 0) currentIndex = 0;
-            renderQuestion(filteredQuestions[currentIndex]);
+            renderCurrentQuestion();
           }
         }
       }
