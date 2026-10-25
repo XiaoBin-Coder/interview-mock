@@ -2065,33 +2065,37 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(30, 41, 59, 0.88);
-      border: 1px dashed rgba(148, 163, 184, 0.5);
-      color: #38bdf8;
+      background: var(--card-inner);
+      border: 1.5px dashed var(--accent);
+      color: var(--accent);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.85em;
       font-weight: 700;
       padding: 1px 8px;
       border-radius: 6px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
     .mask-token:hover .mask-cover {
-      background: rgba(51, 65, 85, 0.95);
-      border-color: #38bdf8;
-      color: #7dd3fc;
+      background: var(--accent-light);
+      border-color: var(--accent-hover);
       transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18);
     }
     .mask-txt {
       display: none;
-      background: rgba(0, 229, 153, 0.15);
-      border: 1px solid rgba(0, 229, 153, 0.45);
-      color: #00ffaa;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #059669;
       padding: 1px 8px;
       border-radius: 6px;
       font-weight: 700;
       animation: maskPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    :root[data-theme="dark"] .mask-txt {
+      color: #00ffaa;
+      background: rgba(0, 229, 153, 0.15);
+      border-color: rgba(0, 229, 153, 0.45);
     }
     .mask-token.revealed .mask-cover {
       display: none;
@@ -7668,7 +7672,11 @@
       stopRecording();
       isPeeking = false;
       currentIndex = idx;
-      renderCurrentQuestion();
+      if (appMode === 'exam') {
+        startNewExamRound();
+      } else {
+        renderCurrentQuestion();
+      }
       updateQuestionSheetActive();
       closeFullSheetModal();
     }
@@ -8083,7 +8091,11 @@
 
       document.getElementById('qTotalDisp').textContent = filteredQuestions.length;
       renderQuestionSheet();
-      nextQuestion();
+      if (appMode === 'exam') {
+        startNewExamRound();
+      } else {
+        nextQuestion();
+      }
     }
 
     function applyTimerSetting() {
@@ -9001,13 +9013,16 @@
 
     function startNewExamRound(customQuestions = null) {
       window.speechSynthesis.cancel();
+      const pool = (filteredQuestions && filteredQuestions.length > 0) ? filteredQuestions : rawQuestions;
+      if (!pool || pool.length === 0) return;
+
       if (customQuestions && customQuestions.length > 0) {
         examRoundQuestions = customQuestions.slice(0, 5);
       } else {
-        const pool = (filteredQuestions && filteredQuestions.length > 0) ? filteredQuestions : rawQuestions;
         let startIdx = currentIndex >= 0 ? currentIndex : 0;
+        let count = Math.min(5, pool.length);
         let picked = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < count; i++) {
           picked.push(pool[(startIdx + i) % pool.length]);
         }
         examRoundQuestions = picked;
@@ -9020,6 +9035,10 @@
     }
 
     function renderExamQuestion() {
+      if (!examRoundQuestions || examRoundQuestions.length === 0) {
+        startNewExamRound();
+        return;
+      }
       if (examRoundIdx >= examRoundQuestions.length) {
         showExamMilestoneModal();
         return;
@@ -9035,7 +9054,7 @@
 
       // Update round indicator
       const roundIdxDisp = document.getElementById('examRoundCurrentIndex');
-      if (roundIdxDisp) roundIdxDisp.textContent = examRoundIdx + 1;
+      if (roundIdxDisp) roundIdxDisp.textContent = `${examRoundIdx + 1}/${examRoundQuestions.length}`;
       updateExamDots();
 
       // Render masked answer
@@ -9122,8 +9141,9 @@
     function updateExamDots() {
       const container = document.getElementById('examRoundDots');
       if (!container) return;
+      let total = (examRoundQuestions && examRoundQuestions.length > 0) ? examRoundQuestions.length : 5;
       let html = '';
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < total; i++) {
         if (i < examScores.length) {
           const res = examScores[i];
           html += `<span class="dot-step ${res.status}" title="#Q${examRoundQuestions[i].id}: ${res.score}分"></span>`;
@@ -9174,16 +9194,21 @@
       const countHesitant = examScores.filter(s => s.status === 'hesitant').length;
       const countStumbled = examScores.filter(s => s.status === 'stumbled').length;
 
+      const maxScore = (examRoundQuestions && examRoundQuestions.length > 0 ? examRoundQuestions.length : 5) * 100;
       document.getElementById('examReportScore').textContent = totalScore;
+      const totalScoreDisp = document.querySelector('.exam-score-big .score-total');
+      if (totalScoreDisp) totalScoreDisp.textContent = `/ ${maxScore} 分`;
+
       document.getElementById('examCountMastered').textContent = `${countMastered} 题`;
       document.getElementById('examCountHesitant').textContent = `${countHesitant} 题`;
       document.getElementById('examCountStumbled').textContent = `${countStumbled} 题`;
 
       let tier = '';
-      if (totalScore === 500) tier = '👑 最强王者 · 满分无懈可击！';
-      else if (totalScore >= 400) tier = '💎 永恒钻石 · 势如破竹！';
-      else if (totalScore >= 300) tier = '🥇 荣耀黄金 · 渐入佳境！';
-      else if (totalScore >= 200) tier = '🥈 秩序白银 · 仍需稳固！';
+      const pct = maxScore > 0 ? (totalScore / maxScore) : 0;
+      if (pct >= 1.0) tier = '👑 最强王者 · 满分无懈可击！';
+      else if (pct >= 0.8) tier = '💎 永恒钻石 · 势如破竹！';
+      else if (pct >= 0.6) tier = '🥇 荣耀黄金 · 渐入佳境！';
+      else if (pct >= 0.4) tier = '🥈 秩序白银 · 仍需稳固！';
       else tier = '🥉 倔强青铜 · 重点回炉攻克！';
       document.getElementById('examReportTitle').textContent = tier;
 
@@ -9237,8 +9262,8 @@
     loadSavedPreferences();
     updateStatsUI();
     populateCategories();
-    applyFilter();
     switchAppMode(appMode, false);
+    applyFilter();
   </script>
 </body>
 </html>
