@@ -1666,16 +1666,16 @@
       .modal-body {
         padding: 14px 18px;
       }
-      .modal-footer {
+      .modal-footer {{
         padding: 12px 18px;
-      }
-      button:active {
+      }}
+      button:active {{
         transform: scale(0.97);
-      }
-    }
+      }}
+    }}
 
     /* Settings Off-canvas Drawer */
-    .drawer-overlay {
+    .drawer-overlay {{
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
@@ -1684,12 +1684,12 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
-    }
-    .drawer-overlay.open {
+    }}
+    .drawer-overlay.open {{
       opacity: 1;
       pointer-events: auto;
-    }
-    .settings-drawer {
+    }}
+    .settings-drawer {{
       position: fixed;
       top: 0;
       right: 0;
@@ -1706,44 +1706,44 @@
       padding: 24px 22px;
       gap: 16px;
       overflow-y: auto;
-    }
-    .settings-drawer.open {
+    }}
+    .settings-drawer.open {{
       transform: translateX(0);
-    }
-    .drawer-header {
+    }}
+    .drawer-header {{
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
       padding-bottom: 12px;
-    }
-    .drawer-title {
+    }}
+    .drawer-title {{
       font-size: 1.15rem;
       font-weight: 800;
       color: var(--text-bright);
-    }
-    .btn-close {
+    }}
+    .btn-close {{
       background: none;
       border: none;
       font-size: 1.4rem;
       cursor: pointer;
       color: var(--text);
       padding: 4px;
-    }
+    }}
 
-    .drawer-section {
+    .drawer-section {{
       display: flex;
       flex-direction: column;
       gap: 6px;
-    }
-    .drawer-label {
+    }}
+    .drawer-label {{
       font-size: 0.78rem;
       font-weight: 700;
       color: var(--text);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-    }
-    .drawer-select {
+    }}
+    .drawer-select {{
       width: 100%;
       padding: 9px 12px;
       border-radius: 10px;
@@ -1753,16 +1753,16 @@
       font-weight: 600;
       font-size: 0.88rem;
       outline: none;
-    }
-    .drawer-checkbox-group {
+    }}
+    .drawer-checkbox-group {{
       display: flex;
       flex-direction: column;
       gap: 8px;
       background: var(--card-inner);
       padding: 12px;
       border-radius: 10px;
-    }
-    .drawer-checkbox {
+    }}
+    .drawer-checkbox {{
       display: flex;
       align-items: center;
       gap: 10px;
@@ -1770,14 +1770,14 @@
       font-weight: 600;
       color: var(--text-bright);
       cursor: pointer;
-    }
-    .drawer-checkbox input {
+    }}
+    .drawer-checkbox input {{
       width: 16px;
       height: 16px;
       accent-color: var(--accent);
-    }
+    }}
 
-    .btn-save-default {
+    .btn-save-default {{
       margin-top: 8px;
       padding: 12px 16px;
       border-radius: 10px;
@@ -1792,14 +1792,14 @@
       justify-content: center;
       gap: 8px;
       transition: all 0.2s;
-    }
-    .btn-save-default:hover {
+    }}
+    .btn-save-default:hover {{
       opacity: 0.9;
       transform: translateY(-1px);
-    }
+    }}
 
     /* Stumbled Modal */
-    .modal-overlay {
+    .modal-overlay {{
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.45);
@@ -1809,8 +1809,8 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-    }
-    .modal-box {
+    }}
+    .modal-box {{
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -1822,14 +1822,14 @@
       box-shadow: var(--shadow-md);
       overflow: hidden;
       animation: modalPop 0.25s ease;
-    }
-    @keyframes modalPop {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+    }}
+    @keyframes modalPop {{
+      from {{ transform: scale(0.95); opacity: 0; }}
+      to {{ transform: scale(1); opacity: 1; }}
+    }}
 
     /* Milestone Celebration Modal */
-    .milestone-box {
+    .milestone-box {{
       max-width: 460px;
       text-align: center;
       padding: 28px 24px 22px;
@@ -1838,8 +1838,8 @@
       align-items: center;
       gap: 12px;
       border-radius: 22px;
-    }
-    .milestone-badge {
+    }}
+    .milestone-badge {{
       display: inline-block;
       font-size: 0.8rem;
       font-weight: 800;
@@ -1847,69 +1847,69 @@
       background: var(--accent-light);
       padding: 4px 14px;
       border-radius: 20px;
-    }
-    .milestone-title {
+    }}
+    .milestone-title {{
       font-size: 1.25rem;
       font-weight: 800;
       color: var(--text-bright);
       line-height: 1.4;
-    }
-    .milestone-stats {
+    }}
+    .milestone-stats {{
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       width: 100%;
       margin: 4px 0 8px;
-    }
-    .m-stat-card {
+    }}
+    .m-stat-card {{
       padding: 12px 14px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--card-inner);
-    }
-    .m-stat-card.mastered {
+    }}
+    .m-stat-card.mastered {{
       border-color: rgba(22, 163, 74, 0.3);
       background: var(--success-bg);
-    }
-    .m-stat-card.stumbled {
+    }}
+    .m-stat-card.stumbled {{
       border-color: rgba(220, 38, 38, 0.3);
       background: var(--danger-bg);
-    }
-    .m-stat-num {
+    }}
+    .m-stat-num {{
       font-size: 1.6rem;
       font-weight: 900;
       line-height: 1.2;
-    }
-    .m-stat-card.mastered .m-stat-num { color: var(--success); }
-    .m-stat-card.stumbled .m-stat-num { color: var(--danger); }
-    .m-stat-lbl {
+    }}
+    .m-stat-card.mastered .m-stat-num {{ color: var(--success); }}
+    .m-stat-card.stumbled .m-stat-num {{ color: var(--danger); }}
+    .m-stat-lbl {{
       font-size: 0.78rem;
       font-weight: 700;
       color: var(--text);
       margin-top: 4px;
-    }
-    .milestone-actions {
+    }}
+    .milestone-actions {{
       display: flex;
       flex-direction: column;
       gap: 8px;
       width: 100%;
       align-items: center;
-    }
-    .modal-header {
+    }}
+    .modal-header {{
       padding: 18px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-    }
-    .modal-body {
+    }}
+    .modal-body {{
       padding: 20px 24px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 10px;
-    }
-    .stumbled-item {
+    }}
+    .stumbled-item {{
       padding: 10px 14px;
       background: var(--card-inner);
       border-radius: 8px;
@@ -1919,7 +1919,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
+    }}
     .modal-footer {
       padding: 14px 24px;
       border-top: 1px solid var(--border);
@@ -1927,6 +1927,444 @@
       justify-content: space-between;
       gap: 12px;
       background: var(--card-inner);
+    }
+
+    /* ========================================================
+       Exam Mode (挖空遮罩闯关考核) Styles
+       ======================================================== */
+    .mode-bar-wrapper {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 8px 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .mode-switch-segmented {
+      display: inline-flex;
+      align-items: center;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .mode-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mode-switch-btn:hover {
+      color: var(--text);
+    }
+    .mode-switch-btn.active {
+      background: var(--card);
+      color: var(--text-bright);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.mode-exam .mode-switch-btn#btnModeExam.active {
+      background: rgba(0, 229, 153, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 153, 0.4);
+    }
+    .mode-switch-badge {
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: rgba(0, 229, 153, 0.2);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .exam-round-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .exam-round-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .exam-round-label b {
+      color: var(--accent);
+      font-size: 0.95rem;
+    }
+    .exam-round-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot-step {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.3);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .dot-step.current {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      transform: scale(1.3);
+    }
+    .dot-step.mastered {
+      background: #10b981;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+    }
+    .dot-step.hesitant {
+      background: #f59e0b;
+      box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+    }
+    .dot-step.stumbled {
+      background: #ef4444;
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+    }
+    .btn-exam-restart {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-exam-restart:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* Mask Token Interactive Styling (刮刮乐遮罩) */
+    .mask-token {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      vertical-align: baseline;
+      margin: 0 3px;
+      line-height: 1.35;
+      user-select: none;
+    }
+    .mask-cover {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30, 41, 59, 0.88);
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      color: #38bdf8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85em;
+      font-weight: 700;
+      padding: 1px 8px;
+      border-radius: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .mask-token:hover .mask-cover {
+      background: rgba(51, 65, 85, 0.95);
+      border-color: #38bdf8;
+      color: #7dd3fc;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(56, 189, 248, 0.25);
+    }
+    .mask-txt {
+      display: none;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.45);
+      color: #00ffaa;
+      padding: 1px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      animation: maskPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .mask-token.revealed .mask-cover {
+      display: none;
+    }
+    .mask-token.revealed .mask-txt {
+      display: inline-flex;
+    }
+    @keyframes maskPop {
+      0% { transform: scale(0.92); opacity: 0.7; }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Exam Mode Action Console */
+    .exam-action-console {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .exam-reveal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-reveal-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-reveal-all:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+    .exam-tip-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .exam-decision-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    .btn-exam-choice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-exam-choice:hover {
+      transform: translateY(-2px);
+    }
+    .btn-exam-choice.mastered {
+      border-color: rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .btn-exam-choice.mastered:hover {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.16);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+    }
+    .btn-exam-choice.hesitant {
+      border-color: rgba(245, 158, 11, 0.35);
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .btn-exam-choice.hesitant:hover {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.16);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+    }
+    .btn-exam-choice.stumbled {
+      border-color: rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.08);
+    }
+    .btn-exam-choice.stumbled:hover {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.16);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.2);
+    }
+    .exam-choice-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+    .exam-choice-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .exam-choice-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-bright);
+    }
+    .btn-exam-choice.mastered .exam-choice-title { color: #10b981; }
+    .btn-exam-choice.hesitant .exam-choice-title { color: #f59e0b; }
+    .btn-exam-choice.stumbled .exam-choice-title { color: #ef4444; }
+    .exam-choice-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Exam Milestone Report Card */
+    .exam-report-card {
+      max-width: 520px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .exam-report-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .exam-badge-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.4);
+      padding: 3px 12px;
+      border-radius: 14px;
+    }
+    .exam-report-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin: 4px 0 0;
+    }
+    .exam-score-big {
+      margin-top: 4px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+    }
+    .exam-score-big .score-num {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .exam-score-big .score-total {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+    .exam-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: var(--card-inner);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .exam-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+    }
+    .exam-stat-item .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .exam-stat-item .stat-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+    .stat-val.green { color: #10b981; }
+    .stat-val.yellow { color: #f59e0b; }
+    .stat-val.red { color: #ef4444; }
+
+    .exam-stumbled-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .exam-stumbled-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #ef4444;
+      margin-bottom: 8px;
+    }
+    .exam-stumbled-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+    .exam-stumbled-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      background: var(--card);
+      border-radius: 6px;
+    }
+    .stumbled-q-id {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+    .stumbled-q-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text);
+    }
+    .stumbled-badge-red {
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .mode-bar {
+        padding: 6px 10px;
+      }
+      .mode-switch-btn {
+        padding: 5px 10px;
+        font-size: 0.78rem;
+      }
+      .exam-decision-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .btn-exam-choice {
+        padding: 10px 12px;
+      }
+      .exam-report-card {
+        padding: 18px 16px;
+        margin: 12px;
+      }
     }
   </style>
 </head>
@@ -1970,6 +2408,33 @@
   <!-- Main Container -->
   <main class="main-container">
     <!-- Topic Capsule Navigation Bar -->
+    <!-- App Mode Bar: Study Mode vs Exam Mode -->
+    <div class="mode-bar-wrapper">
+      <div class="mode-bar">
+        <div class="mode-switch-segmented">
+          <button class="mode-switch-btn active" id="btnModeStudy" onclick="switchAppMode('study')" type="button">
+            <span class="mode-switch-icon">📖</span> 沉浸背诵
+          </button>
+          <button class="mode-switch-btn" id="btnModeExam" onclick="switchAppMode('exam')" type="button">
+            <span class="mode-switch-icon">🎮</span> 挖空闯关
+            <span class="mode-switch-badge">5题速测</span>
+          </button>
+        </div>
+
+        <div class="exam-round-status" id="examRoundStatus" style="display:none;">
+          <span class="exam-round-label">第 <b id="examRoundCurrentIndex">1</b>/5 题</span>
+          <div class="exam-round-dots" id="examRoundDots">
+            <span class="dot-step current"></span>
+            <span class="dot-step"></span>
+            <span class="dot-step"></span>
+            <span class="dot-step"></span>
+            <span class="dot-step"></span>
+          </div>
+          <button class="btn-exam-restart" onclick="startNewExamRound()" type="button" title="重新开始新一局 5 题">🔄 换一组</button>
+        </div>
+      </div>
+    </div>
+
     <div class="topic-bar-wrapper">
       <div class="topic-bar" id="topicBar"></div>
     </div>
@@ -2093,6 +2558,39 @@
 
         <!-- Follow-up Q&A Callout (面试官高频连环追问与秒杀回答) -->
         <div class="egg-callout" id="eggCallout" style="display:none;"></div>
+
+        <!-- Exam Mode Action Console (3 Big Self-Evaluation Buttons + Reveal All) -->
+        <div class="exam-action-console" id="examActionConsole" style="display:none;">
+          <div class="exam-reveal-bar">
+            <button class="btn-reveal-all" onclick="revealAllMasks()" type="button">
+              <span>✨ 一键刮开全部遮罩 (空格)</span>
+            </button>
+            <span class="exam-tip-text">先看题盲猜，再点遮罩揭晓，最后自评打分：</span>
+          </div>
+          <div class="exam-decision-grid">
+            <button class="btn-exam-choice mastered" onclick="handleExamChoice('mastered')" type="button">
+              <span class="exam-choice-icon">🟢</span>
+              <div class="exam-choice-info">
+                <span class="exam-choice-title">稳稳拿捏 (+100)</span>
+                <span class="exam-choice-sub">全想出来了 · 熟练掌握 (1)</span>
+              </div>
+            </button>
+            <button class="btn-exam-choice hesitant" onclick="handleExamChoice('hesitant')" type="button">
+              <span class="exam-choice-info">🟡</span>
+              <div class="exam-choice-info">
+                <span class="exam-choice-title">有点犹豫 (+60)</span>
+                <span class="exam-choice-sub">看了才想起来 · 待温习 (2)</span>
+              </div>
+            </button>
+            <button class="btn-exam-choice stumbled" onclick="handleExamChoice('stumbled')" type="button">
+              <span class="exam-choice-icon">🔴</span>
+              <div class="exam-choice-info">
+                <span class="exam-choice-title">完全卡壳 (0分)</span>
+                <span class="exam-choice-sub">没想出来 · 进错题本 (3)</span>
+              </div>
+            </button>
+          </div>
+        </div>
 
         <!-- Decision Deck: ONLY 2 Tactics -->
         <div class="decision-deck">
@@ -2315,6 +2813,53 @@
         </button>
         <button class="sub-action-link" style="color:var(--text); font-size:0.8rem; margin-top:2px;" onclick="closeMilestoneModal()">
           <span>✕ 暂不换战区，继续刷题 (Esc)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam Milestone Modal (5题一局战报结算) -->
+  <div class="modal-overlay" id="examMilestoneModal" style="display:none;">
+    <div class="modal-box exam-report-card">
+      <div class="exam-report-header">
+        <span class="exam-badge-tag">⚡ 5题极速突击战报</span>
+        <h2 class="exam-report-title" id="examReportTitle">荣耀黄金 · 势如破竹！</h2>
+        <div class="exam-score-big">
+          <span class="score-num" id="examReportScore">460</span>
+          <span class="score-total">/ 500 分</span>
+        </div>
+      </div>
+      
+      <div class="exam-stats-row">
+        <div class="exam-stat-item">
+          <span class="stat-label">🟢 稳稳拿捏</span>
+          <span class="stat-val green" id="examCountMastered">4 题</span>
+        </div>
+        <div class="exam-stat-item">
+          <span class="stat-label">🟡 有点犹豫</span>
+          <span class="stat-val yellow" id="examCountHesitant">0 题</span>
+        </div>
+        <div class="exam-stat-item">
+          <span class="stat-label">🔴 卡壳错题</span>
+          <span class="stat-val red" id="examCountStumbled">1 题</span>
+        </div>
+      </div>
+
+      <!-- Stumbled breakdown in this round -->
+      <div class="exam-stumbled-box" id="examStumbledBox">
+        <div class="exam-stumbled-title">⚠️ 本轮卡壳错题（已自动收录入错题本）：</div>
+        <div class="exam-stumbled-list" id="examStumbledList"></div>
+      </div>
+
+      <div class="milestone-actions">
+        <button class="btn-main primary" id="btnNextExamRound" onclick="startNextExamRound()">
+          <span>🔥 开启下一轮 5 题挑战 (Enter) →</span>
+        </button>
+        <button class="sub-action-link" id="btnDrillExamStumbled" onclick="drillExamStumbledOnly()" style="display:none;">
+          <span>🔄 专门攻克本轮错题</span>
+        </button>
+        <button class="sub-action-link" style="color:var(--text); font-size:0.8rem; margin-top:2px;" onclick="closeExamMilestoneModal(); switchAppMode('study');">
+          <span>📖 返回沉浸背诵模式 (Esc)</span>
         </button>
       </div>
     </div>
@@ -6920,7 +7465,7 @@
       }
     }
 
-    function renderMarkdown(str, isDeepDive = false) {
+    function renderMarkdown(str, isDeepDive = false, isExam = false) {
       if (!str) return '';
       let html = escapeHtml(str);
 
@@ -7012,9 +7557,18 @@
         return `<div class="md-list-item"><span class="md-bullet">•</span><span class="md-list-text">${item.trim()}</span></div>`;
       });
 
-      // Bold
-      html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/__([\s\S]+?)__/g, '<strong>$1</strong>');
+      // Bold or Mask Tokens
+      if (isExam) {
+        html = html.replace(/\*\*([\s\S]+?)\*\*/g, (m, txt) => {
+          return `<span class="mask-token" onclick="toggleMaskToken(this)" title="点击揭晓答案"><span class="mask-cover">???</span><span class="mask-txt">${txt}</span></span>`;
+        });
+        html = html.replace(/__([\s\S]+?)__/g, (m, txt) => {
+          return `<span class="mask-token" onclick="toggleMaskToken(this)" title="点击揭晓答案"><span class="mask-cover">???</span><span class="mask-txt">${txt}</span></span>`;
+        });
+      } else {
+        html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/__([\s\S]+?)__/g, '<strong>$1</strong>');
+      }
       // Inline code
       html = html.replace(/`([^`]+)`/g, '<code class="md-code">$1</code>');
       // Italics
@@ -7742,6 +8296,12 @@
       clearInterval(timer);
       applyTimerSetting();
 
+      if (appMode === 'exam') {
+        window.speechSynthesis.cancel();
+        renderExamQuestion();
+        return;
+      }
+
       // State: Asking (Voice Mode) vs Answering (Pure Question Look Mode)
       const isVoiceOn = document.getElementById('voiceEnableCheck') ? document.getElementById('voiceEnableCheck').checked : true;
       if (isVoiceOn) {
@@ -8299,6 +8859,39 @@
     document.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
 
+      // Exam Mode Keyboard Shortcuts
+      if (appMode === 'exam') {
+        if (document.getElementById('examMilestoneModal') && document.getElementById('examMilestoneModal').style.display === 'flex') {
+          if (e.key === 'Escape') {
+            closeExamMilestoneModal();
+            return;
+          }
+          if (e.key === 'Enter' || e.code === 'Space') {
+            e.preventDefault();
+            startNextExamRound();
+            return;
+          }
+        }
+
+        if (e.key === '1') {
+          e.preventDefault();
+          handleExamChoice('mastered');
+          return;
+        } else if (e.key === '2') {
+          e.preventDefault();
+          handleExamChoice('hesitant');
+          return;
+        } else if (e.key === '3') {
+          e.preventDefault();
+          handleExamChoice('stumbled');
+          return;
+        } else if (e.code === 'Space') {
+          e.preventDefault();
+          revealAllMasks();
+          return;
+        }
+      }
+
       if (document.getElementById('milestoneModal').style.display === 'flex') {
         if (e.key === 'Escape') {
           closeMilestoneModal();
@@ -8360,11 +8953,292 @@
       getAudioContext();
     }, { once: true });
 
-    // Init Sequence
+
+    // ========================================================
+    // Exam Mode (挖空遮罩闯关考核) Logic
+    // ========================================================
+    let appMode = localStorage.getItem('phone_mock_app_mode') || 'study'; // 'study' | 'exam'
+    let examRoundQuestions = [];
+    let examRoundIdx = 0;
+    let examScores = []; // array of score records
+
+    function switchAppMode(mode, triggerRender = true) {
+      appMode = mode;
+      localStorage.setItem('phone_mock_app_mode', mode);
+
+      const btnStudy = document.getElementById('btnModeStudy');
+      const btnExam = document.getElementById('btnModeExam');
+      const roundStatus = document.getElementById('examRoundStatus');
+      const examConsole = document.getElementById('examActionConsole');
+
+      if (mode === 'exam') {
+        document.body.classList.add('mode-exam');
+        if (btnStudy) btnStudy.classList.remove('active');
+        if (btnExam) btnExam.classList.add('active');
+        if (roundStatus) roundStatus.style.display = 'flex';
+        if (examConsole) examConsole.style.display = 'block';
+
+        if (triggerRender) {
+          window.speechSynthesis.cancel();
+          startNewExamRound();
+        }
+      } else {
+        document.body.classList.remove('mode-exam');
+        if (btnStudy) btnStudy.classList.add('active');
+        if (btnExam) btnExam.classList.remove('active');
+        if (roundStatus) roundStatus.style.display = 'none';
+        if (examConsole) examConsole.style.display = 'none';
+
+        if (triggerRender) {
+          window.speechSynthesis.cancel();
+          if (filteredQuestions.length > 0) {
+            if (currentIndex < 0) currentIndex = 0;
+            renderQuestion(filteredQuestions[currentIndex]);
+          }
+        }
+      }
+    }
+
+    function startNewExamRound(customQuestions = null) {
+      window.speechSynthesis.cancel();
+      if (customQuestions && customQuestions.length > 0) {
+        examRoundQuestions = customQuestions.slice(0, 5);
+      } else {
+        const pool = (filteredQuestions && filteredQuestions.length > 0) ? filteredQuestions : rawQuestions;
+        let startIdx = currentIndex >= 0 ? currentIndex : 0;
+        let picked = [];
+        for (let i = 0; i < 5; i++) {
+          picked.push(pool[(startIdx + i) % pool.length]);
+        }
+        examRoundQuestions = picked;
+      }
+
+      examRoundIdx = 0;
+      examScores = [];
+      updateExamDots();
+      renderExamQuestion();
+    }
+
+    function renderExamQuestion() {
+      if (examRoundIdx >= examRoundQuestions.length) {
+        showExamMilestoneModal();
+        return;
+      }
+      const q = examRoundQuestions[examRoundIdx];
+      const realIdx = filteredQuestions.findIndex(item => item.id === q.id);
+      if (realIdx !== -1) currentIndex = realIdx;
+
+      document.getElementById('badgeId').textContent = `#Q${q.id}`;
+      document.getElementById('badgeCat').textContent = q.category;
+      document.getElementById('questionTitleBox').innerHTML = renderMarkdown(q.title);
+      document.getElementById('qIndexDisp').textContent = (currentIndex >= 0 ? currentIndex : 0) + 1;
+
+      // Update round indicator
+      const roundIdxDisp = document.getElementById('examRoundCurrentIndex');
+      if (roundIdxDisp) roundIdxDisp.textContent = examRoundIdx + 1;
+      updateExamDots();
+
+      // Render masked answer
+      const hasSpoken = Boolean(q.spoken_answer);
+      const polishedBlock = document.getElementById('polishedReviewBlock');
+      const draftBlock = document.getElementById('draftReviewBlock');
+
+      if (hasSpoken) {
+        draftBlock.style.display = 'none';
+        polishedBlock.style.display = 'flex';
+        document.getElementById('answerTextBlock').innerHTML = renderMarkdown(q.spoken_answer, false, true);
+      } else {
+        polishedBlock.style.display = 'none';
+        draftBlock.style.display = 'flex';
+        const listElem = document.getElementById('draftPointsList');
+        let points = (q.checklist && q.checklist.length > 0) ? q.checklist : [q.answer];
+        listElem.innerHTML = points.map((p, idx) => `
+          <div class="core-point-item">
+            <span class="core-point-dot">0${idx + 1}.</span>
+            <span>${renderMarkdown(p, false, true)}</span>
+          </div>
+        `).join('');
+      }
+
+      // Hide spoilers
+      const scoringBox = document.getElementById('scoringBox');
+      if (scoringBox) scoringBox.style.display = 'none';
+      const eggCallout = document.getElementById('eggCallout');
+      if (eggCallout) eggCallout.style.display = 'none';
+      const deepDiveCard = document.getElementById('deepDiveCard');
+      if (deepDiveCard) deepDiveCard.style.display = 'none';
+      const cassetteBar = document.getElementById('cassetteBar');
+      if (cassetteBar) cassetteBar.style.display = 'none';
+
+      // Setup Pod State for Exam
+      setPodState('review');
+      const actionDeck = document.querySelector('.action-deck');
+      if (actionDeck) actionDeck.style.display = 'none';
+      const decisionDeck = document.querySelector('.decision-deck');
+      if (decisionDeck) decisionDeck.style.display = 'none';
+      const examConsole = document.getElementById('examActionConsole');
+      if (examConsole) examConsole.style.display = 'block';
+
+      // Start 25s Exam Timer
+      startExamTimer();
+    }
+
+    function handleExamChoice(choice) {
+      clearInterval(timer);
+      const q = examRoundQuestions[examRoundIdx];
+      if (!q) return;
+
+      let score = 0;
+      if (choice === 'mastered') score = 100;
+      else if (choice === 'hesitant') score = 60;
+      else if (choice === 'stumbled') score = 0;
+
+      if (choice === 'mastered') {
+        masteredSet.add(q.id);
+        stumbledSet.delete(q.id);
+      } else if (choice === 'stumbled') {
+        stumbledSet.add(q.id);
+        masteredSet.delete(q.id);
+      }
+      updateStatsUI();
+
+      examScores.push({
+        id: q.id,
+        title: q.title,
+        status: choice,
+        score: score
+      });
+
+      updateExamDots();
+
+      examRoundIdx++;
+      if (examRoundIdx < examRoundQuestions.length) {
+        renderExamQuestion();
+      } else {
+        showExamMilestoneModal();
+      }
+    }
+
+    function updateExamDots() {
+      const container = document.getElementById('examRoundDots');
+      if (!container) return;
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < examScores.length) {
+          const res = examScores[i];
+          html += `<span class="dot-step ${res.status}" title="#Q${examRoundQuestions[i].id}: ${res.score}分"></span>`;
+        } else if (i === examRoundIdx) {
+          html += `<span class="dot-step current" title="当前进行中"></span>`;
+        } else {
+          html += `<span class="dot-step" title="未作答"></span>`;
+        }
+      }
+      container.innerHTML = html;
+    }
+
+    function toggleMaskToken(el) {
+      el.classList.toggle('revealed');
+    }
+
+    function revealAllMasks() {
+      const container = document.getElementById('reviewZone');
+      if (!container) return;
+      const tokens = container.querySelectorAll('.mask-token');
+      tokens.forEach(t => t.classList.add('revealed'));
+    }
+
+    function startExamTimer() {
+      clearInterval(timer);
+      const timerBadge = document.getElementById('timerBadge');
+      if (timerBadge) timerBadge.classList.remove('urgent');
+      let examTimeLeft = 25;
+      const timerDisp = document.getElementById('timerText');
+      if (timerDisp) timerDisp.textContent = `${examTimeLeft}s`;
+
+      timer = setInterval(() => {
+        examTimeLeft--;
+        if (examTimeLeft > 0) {
+          if (timerDisp) timerDisp.textContent = `${examTimeLeft}s`;
+          if (examTimeLeft <= 5 && timerBadge) timerBadge.classList.add('urgent');
+        } else {
+          clearInterval(timer);
+          if (timerDisp) timerDisp.textContent = '0s · 请打分';
+        }
+      }, 1000);
+    }
+
+    function showExamMilestoneModal() {
+      clearInterval(timer);
+      const totalScore = examScores.reduce((acc, curr) => acc + curr.score, 0);
+      const countMastered = examScores.filter(s => s.status === 'mastered').length;
+      const countHesitant = examScores.filter(s => s.status === 'hesitant').length;
+      const countStumbled = examScores.filter(s => s.status === 'stumbled').length;
+
+      document.getElementById('examReportScore').textContent = totalScore;
+      document.getElementById('examCountMastered').textContent = `${countMastered} 题`;
+      document.getElementById('examCountHesitant').textContent = `${countHesitant} 题`;
+      document.getElementById('examCountStumbled').textContent = `${countStumbled} 题`;
+
+      let tier = '';
+      if (totalScore === 500) tier = '👑 最强王者 · 满分无懈可击！';
+      else if (totalScore >= 400) tier = '💎 永恒钻石 · 势如破竹！';
+      else if (totalScore >= 300) tier = '🥇 荣耀黄金 · 渐入佳境！';
+      else if (totalScore >= 200) tier = '🥈 秩序白银 · 仍需稳固！';
+      else tier = '🥉 倔强青铜 · 重点回炉攻克！';
+      document.getElementById('examReportTitle').textContent = tier;
+
+      const stumbledList = document.getElementById('examStumbledList');
+      const stumbledBox = document.getElementById('examStumbledBox');
+      const stumbledItems = examScores.filter(s => s.status === 'stumbled');
+      if (stumbledItems.length > 0) {
+        stumbledBox.style.display = 'block';
+        stumbledList.innerHTML = stumbledItems.map(s => `
+          <div class="exam-stumbled-item">
+            <span class="stumbled-q-id">#Q${s.id}</span>
+            <span class="stumbled-q-title">${s.title}</span>
+            <span class="stumbled-badge-red">卡壳 0分</span>
+          </div>
+        `).join('');
+        const drillBtn = document.getElementById('btnDrillExamStumbled');
+        if (drillBtn) drillBtn.style.display = 'inline-flex';
+      } else {
+        stumbledBox.style.display = 'none';
+        const drillBtn = document.getElementById('btnDrillExamStumbled');
+        if (drillBtn) drillBtn.style.display = 'none';
+      }
+
+      document.getElementById('examMilestoneModal').style.display = 'flex';
+    }
+
+    function closeExamMilestoneModal() {
+      document.getElementById('examMilestoneModal').style.display = 'none';
+    }
+
+    function startNextExamRound() {
+      closeExamMilestoneModal();
+      if (filteredQuestions.length > 0) {
+        currentIndex = (currentIndex + 5) % filteredQuestions.length;
+      }
+      startNewExamRound();
+    }
+
+    function drillExamStumbledOnly() {
+      closeExamMilestoneModal();
+      const stumbledIds = examScores.filter(s => s.status === 'stumbled').map(s => s.id);
+      const stumbledQs = rawQuestions.filter(q => stumbledIds.includes(q.id));
+      if (stumbledQs.length > 0) {
+        startNewExamRound(stumbledQs);
+      } else {
+        startNextExamRound();
+      }
+    }
+
+        // Init Sequence
     loadSavedPreferences();
     updateStatsUI();
     populateCategories();
     applyFilter();
+    switchAppMode(appMode, false);
   </script>
 </body>
 </html>
