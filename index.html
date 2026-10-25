@@ -9172,7 +9172,7 @@
       clearInterval(timer);
       const timerBadge = document.getElementById('timerBadge');
       if (timerBadge) timerBadge.classList.remove('urgent');
-      let examTimeLeft = 25;
+      let examTimeLeft = 60;
       const timerDisp = document.getElementById('timerText');
       if (timerDisp) timerDisp.textContent = `${examTimeLeft}s`;
 
@@ -9180,7 +9180,7 @@
         examTimeLeft--;
         if (examTimeLeft > 0) {
           if (timerDisp) timerDisp.textContent = `${examTimeLeft}s`;
-          if (examTimeLeft <= 5 && timerBadge) timerBadge.classList.add('urgent');
+          if (examTimeLeft <= 10 && timerBadge) timerBadge.classList.add('urgent');
         } else {
           clearInterval(timer);
           if (timerDisp) timerDisp.textContent = '0s · 请打分';
